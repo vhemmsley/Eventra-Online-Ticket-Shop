@@ -17,7 +17,16 @@ export default {
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(to right, #7c3aed, #ec4899, #fb923c)',
-        'hero-gradient': 'linear-gradient(to right, #ffffff, #f8fafc, #fdf2f8)',
+        'hero-gradient': 'linear-gradient(to right, #f5f3ff, #fde2f2, #fff4e1)',
+      },
+      keyframes: {
+        'bounce-soft': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        'bounce-soft': 'bounce-soft 3s ease-in-out infinite',
       },
     },
   },

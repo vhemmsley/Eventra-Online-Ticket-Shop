@@ -16,6 +16,10 @@ body {
   @apply flex mx-5 md:mx-[10%] items-center justify-between;
 }
 
+.text-gradient {
+  @apply bg-gradient-to-r bg-primary-gradient text-transparent bg-clip-text;
+}
+
 /* HAMBURGER MENU */
 
 .hamburger {
