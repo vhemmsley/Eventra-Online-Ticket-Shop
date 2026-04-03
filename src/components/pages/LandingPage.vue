@@ -97,13 +97,13 @@
             class="absolute animate-bounce-soft w-30 bg-white -bottom-6 -left-4 md:-bottom-8 md:-left-10 rounded-lg p-3 shadow-lg flex items-center space-x-2"
           >
             <!-- bubble icon circle-->
-            <div class="rounded-full bg-green-200 w-10 h-10 flex items-center justify-center">
-              <font-awesome-icon icon="arrow-trend-up" />
+            <div class="rounded-full bg-purple-200 w-10 h-10 flex items-center justify-center">
+              <font-awesome-icon icon="calendar" />
             </div>
             <!-- bubble text-->
             <div>
-              <p class="text-sm font-semibold">234 Sold</p>
-              <h3 class="text-xs text-slate-500">This Week</h3>
+              <p class="text-sm font-semibold">Next Event</p>
+              <h3 class="text-xs text-slate-500">Tech Fest 2025</h3>
             </div>
           </div>
         </div>
@@ -112,15 +112,39 @@
   </div>
 
   <!-- Featured events -->
-  <div id="featured-events" class="section-container mt-14">
+  <div id="featured-events" class="section-container mt-14 flex flex-col">
     <!-- section header -->
     <div class="flex flex-col space-x-4 md:space-x-0 items-center justify-center w-full">
       <h2 class="text-4xl text-gradient">Featured Events</h2>
       <p class="text-slate-800 tracking-wide">Don't miss out on these popular events near you!</p>
     </div>
 
-    <!-- event cards -->
+    <!-- event filter -->
+    <div class="mt-8">
+      {{ selectedCategory }}
+      <event-filter @selected-category="handleCategory"></event-filter>
+    </div>
+
+    <!-- event card -->
+
+    <div class="mt-8">
+      <event-card></event-card>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script>
+export default {
+  name: 'LandingPage',
+  data() {
+    return {
+      selectedCategory: 'All',
+    }
+  },
+  methods: {
+    handleCategory(category) {
+      this.selectedCategory = category
+    },
+  },
+}
+</script>

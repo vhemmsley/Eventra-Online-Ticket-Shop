@@ -1,8 +1,15 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store/index.js'
 import './index.css'
+
+// layout components
 import TheHeader from './components/layout/TheHeader.vue'
+import EventFilter from './components/layout/EventFilter.vue'
+import EventCard from './components/layout/EventCard.vue'
+
+// ui components
 import BaseCard from './components/ui/BaseCard.vue'
 
 //font-awesome config
@@ -20,9 +27,13 @@ const app = createApp(App)
 
 app.use(router)
 app.component('the-header', TheHeader)
+app.component('event-filter', EventFilter)
+app.component('event-card', EventCard)
 app.component('base-card', BaseCard)
 
 // register font-awesome-icon component globally
 app.component('font-awesome-icon', FontAwesomeIcon)
+
+app.use(store)
 
 app.mount('#app')
