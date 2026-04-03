@@ -121,14 +121,13 @@
 
     <!-- event filter -->
     <div class="mt-8">
-      {{ selectedCategory }}
       <event-filter @selected-category="handleCategory"></event-filter>
     </div>
 
     <!-- event card -->
 
     <div class="mt-8">
-      <event-card></event-card>
+      <event-card :featuredEvents="featuredEvents"></event-card>
     </div>
   </div>
 </template>
@@ -144,6 +143,12 @@ export default {
   methods: {
     handleCategory(category) {
       this.selectedCategory = category
+    },
+  },
+
+  computed: {
+    featuredEvents() {
+      return this.$store.getters['events/featuredEvents'](this.selectedCategory)
     },
   },
 }
