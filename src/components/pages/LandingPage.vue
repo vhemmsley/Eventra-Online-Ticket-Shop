@@ -124,9 +124,26 @@
       <event-filter @selected-category="handleCategory"></event-filter>
     </div>
 
-    <!-- event card -->
-
+    <!-- Event Display -->
     <div class="mt-8">
+      <!-- LOADING -->
+      <div v-if="isLoading" class="grid md:grid-cols-3 gap-4">
+        <div v-for="n in 3" :key="n" class="animate-pulse bg-white rounded-xl p-4 shadow">
+          <div class="h-40 bg-slate-200 rounded mb-4"></div>
+          <div class="h-4 bg-slate-200 rounded w-3/4 mb-2"></div>
+          <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+        </div>
+      </div>
+
+      <!-- no event available -->
+      <div v-if="featuredEvents.length === 0" class="text-center py-10">
+        <div class="text-4xl">🎭</div>
+        <p class="text-lg font-semibold mt-4">No events found 😞</p>
+        <p class="text-sm text-slate-400 mt-2">Try selecting a different category</p>
+      </div>
+
+      <!-- event card -->
+
       <event-card :featuredEvents="featuredEvents"></event-card>
     </div>
   </div>
@@ -138,8 +155,16 @@ export default {
   data() {
     return {
       selectedCategory: 'All',
+      isLoading: true,
     }
   },
+
+  mounted() {
+    setTimeout(() => {
+      this.isLoading = false
+    }, 2000)
+  },
+
   methods: {
     handleCategory(category) {
       this.selectedCategory = category
