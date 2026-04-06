@@ -17,6 +17,7 @@ export default {
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(to right, #7c3aed, #ec4899, #fb923c)',
+        'secondary-gradient': 'linear-gradient(to right, #faf5ff, #fff1f7, #fffaf3)',
         'hero-gradient': 'linear-gradient(to right, #f5f3ff, #fde2f2, #fff4e1)',
       },
       keyframes: {

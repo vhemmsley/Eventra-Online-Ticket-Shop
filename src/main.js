@@ -11,6 +11,7 @@ import EventCard from './components/layout/EventCard.vue'
 
 // ui components
 import BaseCard from './components/ui/BaseCard.vue'
+import BaseSpinner from './components/ui/BaseSpinner.vue'
 
 //font-awesome config
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -30,6 +31,7 @@ app.component('the-header', TheHeader)
 app.component('event-filter', EventFilter)
 app.component('event-card', EventCard)
 app.component('base-card', BaseCard)
+app.component('base-spinner', BaseSpinner)
 
 // register font-awesome-icon component globally
 app.component('font-awesome-icon', FontAwesomeIcon)
