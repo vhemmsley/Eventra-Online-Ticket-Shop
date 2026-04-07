@@ -2,7 +2,7 @@
   <ul class="flex flex-wrap gap-3 items-center justify-center">
     <li v-for="category in categories" :key="category">
       <button
-        @click="toggleCategory(category)"
+        @click="selectCategory(category)"
         :class="[
           'border rounded-full border-purple-300 py-1 px-4 shadow-md',
           selectedCategory === category
@@ -16,6 +16,32 @@
   </ul>
 </template>
 
+<script>
+export default {
+  name: 'EventFilter',
+  props: {
+    selectedCategory: {
+      type: String,
+      default: 'All',
+    },
+  },
+
+  emits: ['update:selectedCategory'],
+
+  computed: {
+    categories() {
+      return ['All', ...this.$store.getters['events/allCategories']]
+    },
+  },
+
+  methods: {
+    selectCategory(category) {
+      this.$emit('update:selectedCategory', category)
+    },
+  },
+}
+</script>
+
 <style scoped>
 .selected-gradient {
   background: linear-gradient(to right, #7c3aed, #ec4899, #fb923c);
@@ -23,27 +49,3 @@
   transition: all 0.3s ease;
 }
 </style>
-
-<script>
-export default {
-  name: 'EventFilter',
-  data() {
-    return {
-      selectedCategory: 'All',
-    }
-  },
-
-  methods: {
-    toggleCategory(category) {
-      this.selectedCategory = category
-      this.$emit('selected-category', category)
-    },
-  },
-
-  computed: {
-    categories() {
-      return ['All', ...this.$store.getters['events/allCategories']]
-    },
-  },
-}
-</script>

@@ -13,7 +13,7 @@
             Events <br />
             You'll Love
           </h1>
-          <p class="text-slate- text-lg mt-4">
+          <p class="text-lg mt-4">
             Explore, buy, and manage your events tickets effortlessly with Eventra creating
             unforgettable memories..
           </p>
@@ -24,7 +24,7 @@
           >
             <router-link
               to="/events"
-              class="px-8 md:px-5 py-4 w-full rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
+              class="px-8 md:px-5 py-4 w-full rounded-lg text-white bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
             >
               <div class="flex items-center justify-center">
                 <p>Explore Events</p>
@@ -141,7 +141,9 @@
 
       <!-- event card -->
 
-      <event-card v-else :featuredEvents="featuredEvents"></event-card>
+      <div v-else class="grid md:grid-cols-3 gap-6">
+        <event-card v-for="event in featuredEvents" :key="event.id" :event="event" />
+      </div>
     </div>
 
     <!-- show more evnets button-->
@@ -254,36 +256,29 @@
   </section>
 
   <!-- FAQ Heading -->
-  <section id="faq">
+  <section id="faq" class="mb-10">
     <div class="container mx-auto mt-10">
-      <h2 class="text-3xl md:text-5xl text-gradient text-center justify-center items-center">
-        Frequently Asked Questions
-      </h2>
-      <p class="max-w-lg px-6 mx-auto text-center text-sm text-slate-500 mt-4 text-graishBlue">
-        Here are some of our FAQs. If you have any other questions you'd like answered please feel
-        free to email us.
+      <h2 class="text-3xl md:text-5xl text-gradient text-center">Frequently Asked Questions</h2>
+      <p class="max-w-lg px-6 mx-auto text-center text-sm text-slate-500 mt-4">
+        Here are some of our FAQs. If you have any other questions, please email us.
       </p>
     </div>
 
-    <!-- FAQ Accordion -->
-
-    <!-- Main Container -->
-    <div class="container mx-auto px-6">
-      <!-- Accordion Container -->
-      <div class="max-w-5xl m-8 mx-auto overflow-hidden">
-        <!-- Tab 1 -->
-        <div class="py-1 border-b outline-none group" tabindex="1">
-          <!-- Tab Flex Container -->
+    <div class="container mx-auto px-6 mt-8">
+      <div class="max-w-5xl mx-auto">
+        <div v-for="(faq, index) in faqs" :key="index" class="py-2 border-b">
+          <!-- FAQ Header -->
           <div
-            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+            class="flex justify-between items-center py-3 text-gray-500 cursor-pointer"
+            @click="toggleFaq(index)"
           >
-            <!-- Tab Title -->
-            <div class="transition duration-500 ease group-hover:text-red-500">
-              How do I book an event on Eventra?
-            </div>
-            <!-- Arrow -->
+            <div :class="{ 'text-red-500': activeFaq === index }">{{ faq.question }}</div>
             <div
-              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+              :class="{
+                'transform rotate-180 text-red-500': activeFaq === index,
+                'transform rotate-0': activeFaq !== index,
+              }"
+              class="transition duration-300"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
                 <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
@@ -291,138 +286,9 @@
             </div>
           </div>
 
-          <!-- Tab Inner Content -->
-          <div
-            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
-          >
-            <p class="py-2 text-justify text-gray-400">
-              Browse events, select the one you’re interested in, and click “Get Passes.” Complete
-              the checkout process and you’ll receive instant confirmation with your entry details.
-            </p>
-          </div>
-        </div>
-
-        <!-- Tab 2 -->
-        <div class="py-1 border-b outline-none group" tabindex="2">
-          <!-- Tab Flex Container -->
-          <div
-            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
-          >
-            <!-- Tab Title -->
-            <div class="transition duration-500 ease group-hover:text-red-500">
-              Is my payment secure?
-            </div>
-            <!-- Arrow -->
-            <div
-              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
-                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
-              </svg>
-            </div>
-          </div>
-
-          <!-- Tab Inner Content -->
-          <div
-            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
-          >
-            <p class="py-2 text-justify text-gray-400">
-              Yes. All payments on Eventra are processed through secure and trusted payment systems
-              to ensure your information is protected at all times.
-            </p>
-          </div>
-        </div>
-
-        <!-- Tab 3 -->
-        <div class="py-1 border-b outline-none group" tabindex="3">
-          <!-- Tab Flex Container -->
-          <div
-            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
-          >
-            <!-- Tab Title -->
-            <div class="transition duration-500 ease group-hover:text-red-500">
-              Can I create and manage my own events?
-            </div>
-            <!-- Arrow -->
-            <div
-              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
-                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
-              </svg>
-            </div>
-          </div>
-
-          <!-- Tab Inner Content -->
-          <div
-            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
-          >
-            <p class="py-2 text-justify text-gray-400">
-              Absolutely. Eventra allows organizers to create, manage, and promote events easily
-              while reaching a wider audience.
-            </p>
-          </div>
-        </div>
-
-        <!-- Tab 4 -->
-        <div class="py-1 border-b outline-none group" tabindex="4">
-          <!-- Tab Flex Container -->
-          <div
-            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
-          >
-            <!-- Tab Title -->
-            <div class="transition duration-500 ease group-hover:text-red-500">
-              How do I receive my event pass?
-            </div>
-            <!-- Arrow -->
-            <div
-              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
-                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
-              </svg>
-            </div>
-          </div>
-
-          <!-- Tab Inner Content -->
-          <div
-            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
-          >
-            <p class="py-2 text-justify text-gray-400">
-              Once your booking is complete, your pass is delivered instantly and can be accessed
-              from your account or email.
-            </p>
-          </div>
-        </div>
-
-        <!-- Tab 5 -->
-        <div class="py-1 border-b outline-none group" tabindex="4">
-          <!-- Tab Flex Container -->
-          <div
-            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
-          >
-            <!-- Tab Title -->
-            <div class="transition duration-500 ease group-hover:text-red-500">
-              What happens if an event is sold out?
-            </div>
-            <!-- Arrow -->
-            <div
-              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
-                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
-              </svg>
-            </div>
-          </div>
-
-          <!-- Tab Inner Content -->
-          <div
-            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
-          >
-            <p class="py-2 text-justify text-gray-400">
-              If an event is sold out, you won’t be able to book passes for it. However, you can
-              explore similar events or check back in case more spots become available.
-            </p>
+          <!-- FAQ Content -->
+          <div v-show="activeFaq === index" class="overflow-hidden transition-all duration-500">
+            <p class="py-2 text-gray-400">{{ faq.answer }}</p>
           </div>
         </div>
       </div>
@@ -533,6 +399,35 @@ export default {
       selectedCategory: 'All',
       isLoading: true,
       spinnerLoadingTime: 400,
+
+      activeFaq: null,
+      faqs: [
+        {
+          question: 'How do I book an event on Eventra?',
+          answer:
+            "Browse events, select the one you’re interested in, and click 'Get Passes.' Complete the checkout process and receive instant confirmation.",
+        },
+        {
+          question: 'Is my payment secure?',
+          answer:
+            'Yes. All payments on Eventra are processed through secure and trusted payment systems.',
+        },
+        {
+          question: 'Can I create and manage my own events?',
+          answer:
+            'Absolutely. Eventra allows organizers to create, manage, and promote events easily.',
+        },
+        {
+          question: 'How do I receive my event pass?',
+          answer:
+            'Once your booking is complete, your pass is delivered instantly and can be accessed from your account or email.',
+        },
+        {
+          question: 'What happens if an event is sold out?',
+          answer:
+            'If an event is sold out, you won’t be able to book passes. Explore similar events or check back for availability.',
+        },
+      ],
     }
   },
 
@@ -543,6 +438,10 @@ export default {
   },
 
   methods: {
+    toggleFaq(index) {
+      this.activeFaq = this.activeFaq === index ? null : index
+    },
+
     handleCategory(category) {
       this.selectedCategory = category
       this.isLoading = true
