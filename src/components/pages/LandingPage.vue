@@ -22,7 +22,8 @@
           <div
             class="mt-6 flex flex-col md:flex-row items-center md:w-auto md:space-x-10 space-y-4 md:space-y-0"
           >
-            <button
+            <router-link
+              to="/events"
               class="px-8 md:px-5 py-4 w-full rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
             >
               <div class="flex items-center justify-center">
@@ -30,7 +31,7 @@
 
                 <font-awesome-icon icon="arrow-right" class="ml-2" />
               </div>
-            </button>
+            </router-link>
 
             <button
               class="px-8 md:px-5 py-4 w-full rounded-lg text-primary font-medium bg-white border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
@@ -74,7 +75,7 @@
         </div>
 
         <!-- hero image -->
-        <div class="md:w-[50%] relative">
+        <div class="md:w-[50%] pb-2 md:pb-0 relative">
           <img src="../../images/hero1.jpg" class="rounded-xl" />
 
           <!-- floating bubbles -->
@@ -144,11 +145,12 @@
     </div>
 
     <!-- show more evnets button-->
-    <button
+    <router-link
+      to="/events"
       class="px-10 py-4 mt-8 shadow-lg font-semibold rounded-lg text-primary bg-white border border-slate-300 hover:border-purple-400 hover:bg-purple-100 hover:-translate-y-1 transition duration-300"
     >
       View All Events
-    </button>
+    </router-link>
   </section>
 
   <!-- Why EVENTRA section-->
@@ -183,11 +185,12 @@
 
             <p class="text-sm text-slate-500">Find and attend amazing events</p>
 
-            <button
+            <router-link
+              to="/events"
               class="px-5 py-2 mt-8 shadow-lg font-semibold rounded-lg text-primary bg-purple-200 border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
             >
               Browse Events
-            </button>
+            </router-link>
           </div>
         </base-card>
 
@@ -214,9 +217,9 @@
   </section>
 
   <!-- features list -->
-  <section id="features" class="mt-24 bg-secondary-gradient">
+  <section id="features" class="mt-16 bg-secondary-gradient">
     <div
-      class="pt-10 grid grid-cols-1 md:grid-cols-3 gap-6 mx-5 md:mx-[10%] items-center justify-between"
+      class="pt-10 pb-10 grid grid-cols-1 md:grid-cols-3 gap-6 mx-16 md:mx-[10%] items-center justify-between"
     >
       <div class="flex flex-col items-center text-center">
         <div class="bg-purple-200 rounded-full w-16 h-16 flex items-center justify-center">
@@ -250,9 +253,185 @@
     </div>
   </section>
 
+  <!-- FAQ Heading -->
+  <section id="faq">
+    <div class="container mx-auto mt-10">
+      <h2 class="text-4xl md:text-5xl text-gradient text-center justify-center items-center">
+        Frequently Asked Questions
+      </h2>
+      <p class="max-w-lg px-6 mx-auto text-center text-sm text-slate-500 mt-4 text-graishBlue">
+        Here are some of our FAQs. If you have any other questions you'd like answered please feel
+        free to email us.
+      </p>
+    </div>
+
+    <!-- FAQ Accordion -->
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-6">
+      <!-- Accordion Container -->
+      <div class="max-w-5xl m-8 mx-auto overflow-hidden">
+        <!-- Tab 1 -->
+        <div class="py-1 border-b outline-none group" tabindex="1">
+          <!-- Tab Flex Container -->
+          <div
+            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+          >
+            <!-- Tab Title -->
+            <div class="transition duration-500 ease group-hover:text-red-500">
+              How do I book an event on Eventra?
+            </div>
+            <!-- Arrow -->
+            <div
+              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Tab Inner Content -->
+          <div
+            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
+          >
+            <p class="py-2 text-justify text-gray-400">
+              Browse events, select the one you’re interested in, and click “Get Passes.” Complete
+              the checkout process and you’ll receive instant confirmation with your entry details.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 2 -->
+        <div class="py-1 border-b outline-none group" tabindex="2">
+          <!-- Tab Flex Container -->
+          <div
+            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+          >
+            <!-- Tab Title -->
+            <div class="transition duration-500 ease group-hover:text-red-500">
+              Is my payment secure?
+            </div>
+            <!-- Arrow -->
+            <div
+              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Tab Inner Content -->
+          <div
+            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
+          >
+            <p class="py-2 text-justify text-gray-400">
+              Yes. All payments on Eventra are processed through secure and trusted payment systems
+              to ensure your information is protected at all times.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 3 -->
+        <div class="py-1 border-b outline-none group" tabindex="3">
+          <!-- Tab Flex Container -->
+          <div
+            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+          >
+            <!-- Tab Title -->
+            <div class="transition duration-500 ease group-hover:text-red-500">
+              Can I create and manage my own events?
+            </div>
+            <!-- Arrow -->
+            <div
+              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Tab Inner Content -->
+          <div
+            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
+          >
+            <p class="py-2 text-justify text-gray-400">
+              Absolutely. Eventra allows organizers to create, manage, and promote events easily
+              while reaching a wider audience.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 4 -->
+        <div class="py-1 border-b outline-none group" tabindex="4">
+          <!-- Tab Flex Container -->
+          <div
+            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+          >
+            <!-- Tab Title -->
+            <div class="transition duration-500 ease group-hover:text-red-500">
+              How do I receive my event pass?
+            </div>
+            <!-- Arrow -->
+            <div
+              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Tab Inner Content -->
+          <div
+            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
+          >
+            <p class="py-2 text-justify text-gray-400">
+              Once your booking is complete, your pass is delivered instantly and can be accessed
+              from your account or email.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tab 5 -->
+        <div class="py-1 border-b outline-none group" tabindex="4">
+          <!-- Tab Flex Container -->
+          <div
+            class="flex items-center justify-between py-3 text-gray-500 transition duration-500 cursor-pointer group ease"
+          >
+            <!-- Tab Title -->
+            <div class="transition duration-500 ease group-hover:text-red-500">
+              What happens if an event is sold out?
+            </div>
+            <!-- Arrow -->
+            <div
+              class="transition duration-500 ease group-focus:-rotate-180 group-focus:text-red-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+                <path fill="none" stroke="currentColor" stroke-width="3" d="M1 1l8 8 8-8" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Tab Inner Content -->
+          <div
+            class="overflow-hidden transition duration-500 group-focus:max-h-screen max-h-0 ease"
+          >
+            <p class="py-2 text-justify text-gray-400">
+              If an event is sold out, you won’t be able to book passes for it. However, you can
+              explore similar events or check back in case more spots become available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- footer -->
   <footer class="bg-black">
-    <div class="px-6 py-16 grid md:grid-cols-5 md:gap-10 mx-5 md:mx-[5%]">
+    <div class="px-6 md:py-8 pb-0 pt-8 grid md:grid-cols-5 md:gap-10 mx-5 md:mx-[5%]">
       <!-- Logo + Description -->
       <div class="md:col-span-2">
         <!-- Logo -->
@@ -269,9 +448,29 @@
           </h1>
         </div>
 
-        <p class="text-gray-400 mt-4">
-          Making university events accessible and enjoyable for everyone.
-        </p>
+        <p class="text-gray-400 mt-4">Making events accessible and enjoyable for everyone.</p>
+
+        <!-- Social  -->
+
+        <div class="flex gap-4 mt-6">
+          <div
+            class="bg-gray-900 p-3 rounded-xl hover:scale-110 hover:bg-primary-gradient transition duration-300 cursor-pointer"
+          >
+            facebook
+          </div>
+
+          <div
+            class="bg-gray-900 p-3 rounded-xl hover:scale-110 hover:bg-primary-gradient transition duration-300 cursor-pointer"
+          >
+            instagram
+          </div>
+
+          <div
+            class="bg-gray-900 p-3 rounded-xl hover:scale-110 hover:bg-primary-gradient transition duration-300 cursor-pointer"
+          >
+            twitter
+          </div>
+        </div>
       </div>
 
       <!-- Quick Links -->
@@ -279,12 +478,14 @@
         <h3 class="text-lg font-semibold mb-2">For Attendees</h3>
 
         <ul class="space-y-3 text-gray-400">
-          <li><a href="#" class="hover:text-green-400">Browse Events</a></li>
+          <li>
+            <router-link to="/events" class="hover:text-green-400">Browse Events</router-link>
+          </li>
           <li>
             <a href="#services" class="hover:text-green-400">My Tickets</a>
           </li>
           <li>
-            <a href="#explore" class="hover:text-green-400">How It Works</a>
+            <a href="#features" class="hover:text-green-400">How It Works</a>
           </li>
           <li><a href="#" class="hover:text-green-400">Sign Up</a></li>
         </ul>
@@ -298,7 +499,6 @@
           <li><a class="hover:text-green-400">Dashboard</a></li>
           <li><a class="hover:text-green-400">Create Event</a></li>
           <li><a class="hover:text-green-400">Get Started</a></li>
-          <li><a class="hover:text-green-400">Token Deployment</a></li>
         </ul>
       </div>
 
@@ -311,25 +511,8 @@
           <li><a class="hover:text-green-400">Terms of Service</a></li>
           <li><a class="hover:text-green-400">Privacy Policy</a></li>
           <li>Email: support@eventra.io</li>
-          <li>Live Support Available</li>
-          <li>24/7 Technical Assistance</li>
+          <li>24/7 Live Support Available</li>
         </ul>
-
-        Social Icons
-
-        <div class="flex gap-4 mt-6">
-          <div class="bg-gray-900 p-2 rounded-lg hover:bg-green-500 cursor-pointer">
-            <font-awesome-icon icon="facebook-f" class="text-white" />
-          </div>
-
-          <div class="bg-gray-900 p-2 rounded-lg hover:bg-green-500 cursor-pointer">
-            <font-awesome-icon icon="twitter" class="text-white" />
-          </div>
-
-          <div class="bg-gray-900 p-2 rounded-lg hover:bg-green-500 cursor-pointer">
-            <font-awesome-icon icon="instagram" class="text-white" />
-          </div>
-        </div>
       </div>
     </div>
 

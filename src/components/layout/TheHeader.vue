@@ -4,17 +4,19 @@
     <!-- LOGO -->
     <div class="group flex items-center space-x-2 cursor-pointer">
       <img src="/favicon.png" alt="" class="w-8 group-hover:scale-110 transition duration-300" />
-      <h1
-        class="text-3xl font-semibold bg-linear-to-r bg-primary-gradient bg-clip-text text-transparent"
-      >
-        Eventra
-      </h1>
+      <router-link to="/">
+        <h1
+          class="text-3xl font-semibold bg-linear-to-r bg-primary-gradient bg-clip-text text-transparent"
+        >
+          Eventra
+        </h1>
+      </router-link>
     </div>
 
     <!-- DESKTOP NAV -->
     <ul class="hidden md:flex space-x-10 text-slate-700 font-medium">
       <li class="group hover:scale-105 transition duration-300 cursor-pointer">
-        <a href="#" class="hover:text-primary">Explore Events</a>
+        <router-link to="/explore" class="hover:text-primary">Explore Events</router-link>
         <div
           class="border-b-2 border-purple-600 opacity-0 group-hover:opacity-100 mt-1 transition duration-300"
         ></div>
