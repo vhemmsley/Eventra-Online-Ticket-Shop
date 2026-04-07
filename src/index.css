@@ -17,7 +17,7 @@ body {
 }
 
 .text-gradient {
-  @apply bg-gradient-to-r bg-primary-gradient text-transparent bg-clip-text;
+  @apply bg-primary-gradient text-transparent bg-clip-text;
 }
 
 /* HAMBURGER MENU */

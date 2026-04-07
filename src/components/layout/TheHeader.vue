@@ -16,7 +16,7 @@
     <!-- DESKTOP NAV -->
     <ul class="hidden md:flex space-x-10 text-slate-700 font-medium">
       <li class="group hover:scale-105 transition duration-300 cursor-pointer">
-        <router-link to="/explore" class="hover:text-primary">Explore Events</router-link>
+        <router-link to="/events" class="hover:text-primary">Explore Events</router-link>
         <div
           class="border-b-2 border-purple-600 opacity-0 group-hover:opacity-100 mt-1 transition duration-300"
         ></div>

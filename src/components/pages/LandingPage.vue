@@ -431,7 +431,7 @@
 
   <!-- footer -->
   <footer class="bg-black">
-    <div class="px-6 md:py-8 pb-0 pt-8 grid md:grid-cols-5 md:gap-10 mx-5 md:mx-[5%]">
+    <div class="px-6 md:py-8 pb-1 pt-8 grid md:grid-cols-5 md:gap-10 mx-5 md:mx-[5%]">
       <!-- Logo + Description -->
       <div class="md:col-span-2">
         <!-- Logo -->
