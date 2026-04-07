@@ -256,7 +256,7 @@
   <!-- FAQ Heading -->
   <section id="faq">
     <div class="container mx-auto mt-10">
-      <h2 class="text-4xl md:text-5xl text-gradient text-center justify-center items-center">
+      <h2 class="text-3xl md:text-5xl text-gradient text-center justify-center items-center">
         Frequently Asked Questions
       </h2>
       <p class="max-w-lg px-6 mx-auto text-center text-sm text-slate-500 mt-4 text-graishBlue">
