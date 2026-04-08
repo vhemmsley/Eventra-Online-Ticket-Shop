@@ -272,10 +272,12 @@
             class="flex justify-between items-center py-3 text-gray-500 cursor-pointer"
             @click="toggleFaq(index)"
           >
-            <div :class="{ 'text-red-500': activeFaq === index }">{{ faq.question }}</div>
+            <div :class="{ 'hover:text-purple-500 text-purple-600': activeFaq === index }">
+              {{ faq.question }}
+            </div>
             <div
               :class="{
-                'transform rotate-180 text-red-500': activeFaq === index,
+                'transform rotate-180 text-purple-500': activeFaq === index,
                 'transform rotate-0': activeFaq !== index,
               }"
               class="transition duration-300"
