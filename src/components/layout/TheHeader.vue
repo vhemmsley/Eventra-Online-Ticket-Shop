@@ -32,11 +32,13 @@
 
     <!-- LOGIN AND SIGNUP BUTTONS -->
     <div class="hidden md:flex space-x-3">
-      <button
-        class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
-      >
-        Login
-      </button>
+      <router-link to="/login">
+        <button
+          class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
+        >
+          Login
+        </button>
+      </router-link>
 
       <button
         class="px-5 py-2 rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
@@ -83,11 +85,15 @@
     <div class="w-10 h-[2px] bg-slate-200"></div>
 
     <!-- buttons -->
-    <button
-      class="w-3/4 px-5 py-2 rounded-lg text-purple-600 border border-slate-300 hover:bg-purple-100 transition"
-    >
-      Login
-    </button>
+
+    <router-link to="/login">
+      <button
+        @click="toggleMenu"
+        class="px-20 py-2 rounded-lg text-purple-600 border border-slate-300 hover:bg-purple-100 transition"
+      >
+        Login
+      </button>
+    </router-link>
 
     <button
       class="w-3/4 px-5 py-2 rounded-lg text-white bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 shadow-md hover:shadow-xl transition"
