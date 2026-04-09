@@ -1,9 +1,9 @@
 <template>
   <!-- PAGE BACKGROUND -->
-  <div class="min-h-screen flex items-center justify-center bg-secondary-gradient px-4 py-6">
+  <div class="min-h-screen flex justify-center bg-secondary-gradient px-4 py-6">
     <!-- CARD -->
     <div
-      class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+      class="w-full max-w-4xl mt-16 md:mt-0 py-6 md:py-0 h-[70vh] md:h-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
     >
       <!-- LEFT SIDE (FORM) -->
       <div class="w-full md:w-1/2 p-8 md:p-12">
@@ -18,8 +18,8 @@
           to discover and manage amazing events.
         </p>
 
-        <!-- LOGIN FORM -->
-        <div v-if="mode === 'login'" class="space-y-6">
+        <!-- LOGIN / signup FORM -->
+        <div class="space-y-6">
           <!-- EMAIL -->
           <div>
             <label class="text-sm text-slate-600">Email</label>
@@ -62,53 +62,6 @@
             class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
           >
             Log In
-          </button>
-        </div>
-
-        <!-- SIGN UP FORM -->
-        <div v-else class="space-y-6">
-          <!-- EMAIL -->
-          <div>
-            <label class="text-sm text-slate-600">Email</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
-            >
-              <span class="mr-2">✉️</span>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                class="w-full outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <!-- PASSWORD -->
-          <div>
-            <label class="text-sm text-slate-600">Password</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
-            >
-              <span class="mr-2">🔑</span>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                class="w-full outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <!-- FORGOT PASSWORD -->
-          <div class="text-right">
-            <span class="text-sm text-purple-600 hover:underline cursor-pointer">
-              Forgot password?
-            </span>
-          </div>
-
-          <!-- LOGIN BUTTON -->
-          <button
-            class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
-          >
-            {{ mode === 'login' ? 'Log In' : 'Sign Up' }}
           </button>
         </div>
 
