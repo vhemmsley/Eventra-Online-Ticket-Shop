@@ -55,7 +55,7 @@
             <!-- stat 2 -->
             <div>
               <h2
-                class="text-2xl md:text-3xl font-semibold bg-gradient-to-r bg-primary-gradient bg-clip-text text-transparent"
+                class="text-2xl md:text-3xl font-semibold bg-primary-gradient bg-clip-text text-transparent"
               >
                 50K+
               </h2>
@@ -65,7 +65,7 @@
             <!-- stat 3 -->
             <div>
               <h2
-                class="text-2xl md:text-3xl font-semibold bg-gradient-to-r bg-primary-gradient bg-clip-text text-transparent"
+                class="text-2xl md:text-3xl font-semibold bg-primary-gradient bg-clip-text text-transparent"
               >
                 100+
               </h2>
@@ -122,7 +122,7 @@
 
     <!-- event filter -->
     <div class="mt-8">
-      <event-filter @selected-category="handleCategory"></event-filter>
+      <event-filter v-model:selectedCategory="selectedCategory"></event-filter>
     </div>
 
     <!-- Event Display -->
@@ -443,9 +443,10 @@ export default {
     toggleFaq(index) {
       this.activeFaq = this.activeFaq === index ? null : index
     },
+  },
 
-    handleCategory(category) {
-      this.selectedCategory = category
+  watch: {
+    selectedCategory() {
       this.isLoading = true
 
       setTimeout(() => {
