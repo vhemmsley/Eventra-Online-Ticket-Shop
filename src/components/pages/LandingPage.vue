@@ -33,11 +33,12 @@
               </div>
             </router-link>
 
-            <button
+            <router-link
+              to="/auth"
               class="px-8 md:px-5 py-4 w-full rounded-lg text-primary font-medium bg-white border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
             >
-              Get Started
-            </button>
+              <span class="flex items-center justify-center">Get Started</span>
+            </router-link>
           </div>
 
           <!-- STATS -->
@@ -355,7 +356,10 @@
           <li>
             <a href="#features" class="hover:text-green-400">How It Works</a>
           </li>
-          <li><a href="#" class="hover:text-green-400">Sign Up</a></li>
+
+          <li class="hover:text-green-400 group">
+            <router-link to="/auth">Sign Up</router-link>
+          </li>
         </ul>
       </div>
 

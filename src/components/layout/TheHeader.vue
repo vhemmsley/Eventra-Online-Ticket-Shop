@@ -32,7 +32,7 @@
 
     <!-- LOGIN AND SIGNUP BUTTONS -->
     <div class="hidden md:flex space-x-3">
-      <router-link to="/login">
+      <router-link to="/auth">
         <button
           class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
         >
@@ -40,11 +40,13 @@
         </button>
       </router-link>
 
-      <button
-        class="px-5 py-2 rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
-      >
-        Sign Up
-      </button>
+      <router-link to="/auth">
+        <button
+          class="px-5 py-2 rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
+        >
+          Sign Up
+        </button>
+      </router-link>
     </div>
 
     <!-- HAMBURGER -->
@@ -86,7 +88,7 @@
 
     <!-- buttons -->
 
-    <router-link to="/login">
+    <router-link to="/auth">
       <button
         @click="toggleMenu"
         class="px-20 py-2 rounded-lg text-purple-600 border border-slate-300 hover:bg-purple-100 transition"
