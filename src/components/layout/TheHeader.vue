@@ -88,7 +88,6 @@
     ]"
   >
     <router-link
-      v-if="!isEventsPage"
       to="/events"
       @click="toggleMenu"
       class="text-slate-700 text-lg hover:text-purple-600 transition"
@@ -97,7 +96,7 @@
     </router-link>
 
     <router-link
-      href="#"
+      to="/"
       @click="toggleMenu"
       class="text-slate-700 text-lg hover:text-purple-600 transition"
     >
@@ -170,10 +169,6 @@ export default {
 
     isAuthPage() {
       return (this.routePath = '/auth')
-    },
-
-    isEventsPage() {
-      return (this.routePath = '/events')
     },
   },
 }
