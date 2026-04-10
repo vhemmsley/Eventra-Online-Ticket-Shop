@@ -44,7 +44,7 @@
 
     <!-- LOGIN AND SIGNUP BUTTONS -->
     <div class="hidden md:flex space-x-3">
-      <router-link to="/auth" v-if="routePath !== '/auth?mode=login'">
+      <router-link to="/auth?mode=login" v-if="isAuthPage || authMode !== 'login'">
         <button
           class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
         >
@@ -52,7 +52,7 @@
         </button>
       </router-link>
 
-      <router-link to="/auth">
+      <router-link to="/auth?mode=signup" v-if="!isAuthPage || authMode !== 'signup'">
         <button
           class="px-5 py-2 rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
         >
@@ -87,33 +87,53 @@
       isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5 pointer-events-none',
     ]"
   >
-    <a href="#" @click="toggleMenu" class="text-slate-700 text-lg hover:text-purple-600 transition">
+    <router-link
+      v-if="!isEventsPage"
+      to="/events"
+      @click="toggleMenu"
+      class="text-slate-700 text-lg hover:text-purple-600 transition"
+    >
       Explore Events
-    </a>
+    </router-link>
 
-    <a href="#" @click="toggleMenu" class="text-slate-700 text-lg hover:text-purple-600 transition">
+    <router-link
+      href="#"
+      @click="toggleMenu"
+      class="text-slate-700 text-lg hover:text-purple-600 transition"
+    >
       Help
-    </a>
+    </router-link>
 
     <!-- divider -->
     <div class="w-10 h-[2px] bg-slate-200"></div>
 
     <!-- buttons -->
 
-    <router-link to="/auth">
+    <router-link
+      to="/auth?mode=login"
+      v-if="!isAuthPage || authMode !== 'login'"
+      class="w-full flex"
+    >
       <button
         @click="toggleMenu"
-        class="px-20 py-2 rounded-lg text-purple-600 border border-slate-300 hover:bg-purple-100 transition"
+        class="w-full mx-[10%] py-2 rounded-lg text-purple-600 border border-slate-300 hover:bg-purple-100 transition"
       >
         Login
       </button>
     </router-link>
 
-    <button
-      class="w-3/4 px-5 py-2 rounded-lg text-white bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 shadow-md hover:shadow-xl transition"
+    <router-link
+      to="/auth?mode=signup"
+      v-if="!isAuthPage || authMode !== 'signup'"
+      class="w-full flex"
     >
-      Sign Up
-    </button>
+      <button
+        @click="toggleMenu"
+        class="w-full mx-[10%] py-2 rounded-lg text-white bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 shadow-md hover:shadow-xl transition"
+      >
+        Sign Up
+      </button>
+    </router-link>
   </div>
 </template>
 
@@ -122,12 +142,15 @@ export default {
   data() {
     return {
       isOpen: false,
+      mode: 'login',
     }
   },
 
   muonted() {
     const mode = this.$route.query.mode
-    if (mode) this.mode = mode
+    if (mode) {
+      this.mode = mode
+    }
   },
 
   methods: {
@@ -139,6 +162,18 @@ export default {
   computed: {
     routePath() {
       return this.$route.path
+    },
+
+    authMode() {
+      return this.$route.query.mode
+    },
+
+    isAuthPage() {
+      return (this.routePath = '/auth')
+    },
+
+    isEventsPage() {
+      return (this.routePath = '/events')
     },
   },
 }

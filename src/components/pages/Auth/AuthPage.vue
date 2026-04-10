@@ -90,7 +90,6 @@
             class="text-purple-600 font-medium cursor-pointer hover:underline"
           >
             Sign up
-            <br />
           </span>
         </p>
 
@@ -130,7 +129,23 @@ export default {
 
   methods: {
     toggleMode() {
-      this.mode = this.mode === 'login' ? 'signup' : 'login'
+      const newMode = this.mode === 'login' ? 'signup' : 'login'
+      this.mode = newMode
+
+      this.$router.push({ path: '/auth', query: { mode: newMode } })
+    },
+  },
+  computed: {
+    queryMode() {
+      return this.$route.query.mode
+    },
+  },
+
+  watch: {
+    queryMode(firemode) {
+      if (firemode) {
+        this.mode = firemode
+      }
     },
   },
 }
