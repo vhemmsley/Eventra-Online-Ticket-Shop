@@ -1,6 +1,6 @@
 <template>
   <!-- PAGE BACKGROUND -->
-  <div class="min-h-screen flex justify-center bg-secondary-gradient px-4 py-16">
+  <div class="min-h-screen flex justify-center bg-secondary-gradient px-4 py-10 md:py-6">
     <!-- CARD -->
     <div
       class="w-full max-w-4xl md:mt-0 py-4 md:py-0 h-full md:h-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
