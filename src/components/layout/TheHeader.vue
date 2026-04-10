@@ -15,7 +15,19 @@
 
     <!-- DESKTOP NAV -->
     <ul class="hidden md:flex space-x-10 text-slate-700 font-medium">
-      <li class="group hover:scale-105 transition duration-300 cursor-pointer">
+      <li
+        v-if="routePath !== '/'"
+        class="group hover:scale-105 transition duration-300 cursor-pointer"
+      >
+        <router-link to="/" class="hover:text-primary">Home</router-link>
+        <div
+          class="border-b-2 border-purple-600 opacity-0 group-hover:opacity-100 mt-1 transition duration-300"
+        ></div>
+      </li>
+      <li
+        v-if="routePath === '/'"
+        class="group hover:scale-105 transition duration-300 cursor-pointer"
+      >
         <router-link to="/events" class="hover:text-primary">Explore Events</router-link>
         <div
           class="border-b-2 border-purple-600 opacity-0 group-hover:opacity-100 mt-1 transition duration-300"
@@ -32,7 +44,7 @@
 
     <!-- LOGIN AND SIGNUP BUTTONS -->
     <div class="hidden md:flex space-x-3">
-      <router-link to="/auth">
+      <router-link to="/auth" v-if="routePath !== '/auth?mode=login'">
         <button
           class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
         >
@@ -112,9 +124,21 @@ export default {
       isOpen: false,
     }
   },
+
+  muonted() {
+    const mode = this.$route.query.mode
+    if (mode) this.mode = mode
+  },
+
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen
+    },
+  },
+
+  computed: {
+    routePath() {
+      return this.$route.path
     },
   },
 }

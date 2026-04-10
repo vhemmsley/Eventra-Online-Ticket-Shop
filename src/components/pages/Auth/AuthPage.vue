@@ -3,7 +3,7 @@
   <div class="min-h-screen flex justify-center bg-secondary-gradient px-4 py-6">
     <!-- CARD -->
     <div
-      class="w-full max-w-4xl mt-16 md:mt-0 py-6 md:py-0 h-[70vh] md:h-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
+      class="w-full max-w-4xl mt-16 md:mt-0 py-4 md:py-0 h-[80vh] md:h-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
     >
       <!-- LEFT SIDE (FORM) -->
       <div class="w-full md:w-1/2 p-8 md:p-12">
@@ -90,6 +90,7 @@
             class="text-purple-600 font-medium cursor-pointer hover:underline"
           >
             Sign up
+            <br />
           </span>
         </p>
 
