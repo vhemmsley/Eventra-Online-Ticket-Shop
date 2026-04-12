@@ -5,7 +5,12 @@ import getters from './getters.js'
 export default {
   namespaced: true,
   state() {
-    return {}
+    return {
+      user: null,
+      role: null, // attendee or host
+      token: null,
+      didAutoLogout: false,
+    }
   },
   actions,
   mutations,

@@ -52,7 +52,10 @@
         </button>
       </router-link>
 
-      <router-link to="/auth?mode=signup" v-if="!isAuthPage || authMode !== 'signup'">
+      <router-link
+        to="/auth?mode=signup"
+        v-if="!isAuthPage || authMode !== 'signup' || authMode === 'login'"
+      >
         <button
           class="px-5 py-2 rounded-lg text-white bg-linear-to-r bg-primary-gradient hover:scale-105 transition duration-200 shadow-md hover:shadow-xl"
         >
@@ -145,13 +148,6 @@ export default {
     }
   },
 
-  muonted() {
-    const mode = this.$route.query.mode
-    if (mode) {
-      this.mode = mode
-    }
-  },
-
   methods: {
     toggleMenu() {
       this.isOpen = !this.isOpen
@@ -168,7 +164,7 @@ export default {
     },
 
     isAuthPage() {
-      return (this.routePath = '/auth')
+      return this.routePath === '/auth'
     },
   },
 }

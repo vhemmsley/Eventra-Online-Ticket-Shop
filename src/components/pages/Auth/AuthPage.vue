@@ -26,93 +26,110 @@
         </p>
 
         <!-- LOGIN / signup FORM -->
-        <div class="space-y-6">
-          <!-- FullName -->
-          <div v-if="mode === 'signup'">
-            <label class="text-sm text-slate-600">Full Name</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+        <form @submit.prevent="handleSubmit()">
+          <div class="space-y-6">
+            <!-- FullName -->
+            <div v-if="mode === 'signup'">
+              <label class="text-sm text-slate-600">Full Name</label>
+              <div
+                class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+              >
+                <span class="mr-2">✉️</span>
+                <input
+                  v-model="fullName"
+                  type="text"
+                  placeholder="Enter your full name"
+                  class="w-full outline-none text-sm"
+                />
+              </div>
+            </div>
+
+            <!-- sign up as host -->
+            <div v-if="mode === 'signup_as_host'">
+              <label class="text-sm text-slate-600">Host Name</label>
+              <div
+                class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+              >
+                <span class="mr-2">✉️</span>
+                <input
+                  v-model="hostName"
+                  type="text"
+                  placeholder="Enter your host alias"
+                  class="w-full outline-none text-sm"
+                />
+              </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div>
+              <label class="text-sm text-slate-600">Email</label>
+              <div
+                class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+              >
+                <span class="mr-2">✉️</span>
+                <input
+                  v-model="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  class="w-full outline-none text-sm"
+                />
+              </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div>
+              <label class="text-sm text-slate-600">Password</label>
+              <div
+                class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+              >
+                <span class="mr-2">🔑</span>
+                <input
+                  v-model="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  class="w-full outline-none text-sm"
+                />
+              </div>
+            </div>
+
+            <!-- host signup and forget password-->
+            <div class="flex justify-between">
+              <!-- signup as host -->
+
+              <div
+                @click="signupAsHost()"
+                v-if="mode === 'signup'"
+                class="text-sm text-purple-600 hover:underline cursor-pointer"
+              >
+                Signup as host?
+              </div>
+
+              <!-- signup as user -->
+
+              <div
+                @click="signupAsHost()"
+                v-if="mode === 'signup_as_host'"
+                class="text-sm text-purple-600 hover:underline cursor-pointer"
+              >
+                Signup as attendee?
+              </div>
+
+              <!-- FORGOT PASSWORD -->
+
+              <div class="text-sm text-purple-600 hover:underline cursor-pointer">
+                Forgot password?
+              </div>
+            </div>
+
+            <!-- LOGIN BUTTON -->
+            <button
+              type="submit"
+              class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
             >
-              <span class="mr-2">✉️</span>
-              <input
-                type="text"
-                placeholder="Enter your full name"
-                class="w-full outline-none text-sm"
-              />
-            </div>
+              {{ mode === 'login' ? 'Log In' : 'Sign Up' }}
+            </button>
           </div>
-
-          <!-- sign up as host -->
-          <div v-if="mode === 'signup_as_host'">
-            <label class="text-sm text-slate-600">Host Name</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
-            >
-              <span class="mr-2">✉️</span>
-              <input
-                type="text"
-                placeholder="Enter your host alias"
-                class="w-full outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <!-- EMAIL -->
-          <div>
-            <label class="text-sm text-slate-600">Email</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
-            >
-              <span class="mr-2">✉️</span>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                class="w-full outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <!-- PASSWORD -->
-          <div>
-            <label class="text-sm text-slate-600">Password</label>
-            <div
-              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
-            >
-              <span class="mr-2">🔑</span>
-              <input
-                type="password"
-                placeholder="Enter your password"
-                class="w-full outline-none text-sm"
-              />
-            </div>
-          </div>
-
-          <!-- host signup and forget password-->
-          <div class="flex" :class="mode === 'signup' ? 'justify-between' : ''">
-            <!-- signup as host -->
-
-            <div
-              @click="signupAsHost()"
-              v-if="mode === 'signup'"
-              class="text-sm text-purple-600 hover:underline cursor-pointer"
-            >
-              Signup as host?
-            </div>
-
-            <!-- FORGOT PASSWORD -->
-
-            <div class="text-sm text-purple-600 hover:underline cursor-pointer">
-              Forgot password?
-            </div>
-          </div>
-
-          <!-- LOGIN BUTTON -->
-          <button
-            class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
-          >
-            {{ mode === 'login' ? 'Log In' : 'Sign Up' }}
-          </button>
-        </div>
+        </form>
 
         <!-- DIVIDER -->
         <div class="flex items-center my-2">
@@ -124,6 +141,7 @@
         <!-- SOCIAL LOGIN -->
         <div class="flex items-center justify-center">
           <button
+            @click.prevent="signinWithGoogle()"
             class="flex items-center justify-center gap-2 border-2 rounded-lg py-2 px-20 hover:bg-gray-50 transition"
           >
             <img src="../../../images/socials/google.png" class="w-5" />
@@ -173,32 +191,107 @@ export default {
   data() {
     return {
       mode: 'login',
+      email: '',
+      password: '',
+      fullName: '',
+      hostName: '',
     }
+  },
+
+  mounted() {
+    const mode = this.$route.query.mode
+
+    if (mode === 'signup' || mode === 'login' || mode === 'signup_as_host') {
+      this.mode = mode
+    } else {
+      this.mode = 'login'
+    }
+  },
+
+  computed: {
+    queryPath() {
+      return this.$route.query.mode
+    },
+
+    isAuthPage() {
+      return this.$route.path === '/auth'
+    },
+  },
+
+  watch: {
+    queryPath(newVal) {
+      if (newVal === 'signup' || newVal === 'login' || newVal === 'signup_as_host') {
+        this.mode = newVal
+      } else {
+        this.mode = 'login'
+      }
+    },
+
+    isAuthPage(isAuth) {
+      if (!isAuth) {
+        this.mode = 'login'
+      }
+    },
   },
 
   methods: {
     toggleMode() {
       const newMode = this.mode === 'login' ? 'signup' : 'login'
       this.mode = newMode
-
-      this.$router.push({ path: '/auth', query: { mode: newMode } })
     },
 
     signupAsHost() {
-      this.mode = 'signup_as_host'
-      this.$router.push({ path: '/auth', query: { mode: 'signup_as_host' } })
+      this.mode = this.mode === 'signup' ? 'signup_as_host' : 'signup'
     },
-  },
-  computed: {
-    queryMode() {
-      return this.$route.query.mode
-    },
-  },
 
-  watch: {
-    queryMode(firemode) {
-      if (firemode) {
-        this.mode = firemode
+    async signinWithGoogle() {
+      try {
+        await this.$store.dispatch('auth/googleSignIn')
+        this.$router.push('/events')
+      } catch (err) {
+        console.error('Google sign-in failed:', err)
+      }
+    },
+
+    handleSubmit() {
+      if (this.mode === 'login') {
+        this.$store.dispatch('auth/login', {
+          email: this.email,
+          password: this.password,
+        })
+
+        console.log('Login submitted with:', {
+          email: this.email,
+          password: this.password,
+        })
+      } else if (this.mode === 'signup') {
+        this.$store.dispatch('auth/signup', {
+          fullName: this.fullName,
+          email: this.email,
+          password: this.password,
+        })
+
+        console.log('Signup submitted with:', {
+          fullName: this.fullName,
+          email: this.email,
+          password: this.password,
+          role: 'attendee',
+        })
+      } else if (this.mode === 'signup_as_host') {
+        this.$store.dispatch('auth/signup', {
+          hostName: this.hostName,
+          email: this.email,
+          password: this.password,
+          role: 'host',
+        })
+
+        console.log('Signup as host submitted with:', {
+          hostName: this.hostName,
+          email: this.email,
+          password: this.password,
+        })
+      } else {
+        this.$router.push('/auth?mode=login')
       }
     },
   },
