@@ -10,16 +10,53 @@
         <!-- HEADER -->
 
         <h1 class="text-3xl font-semibold text-gradient mb-2">
-          {{ mode == 'login' ? 'Welcome Back👋' : 'Sign Up' }}
+          {{
+            mode == 'login'
+              ? 'Welcome Back👋'
+              : mode == 'signup_as_host'
+                ? 'Sign Up as Host'
+                : 'Sign Up'
+          }}
         </h1>
 
-        <p class="text-sm text-slate-500 mb-8">
+        <p class="text-sm text-slate-500 mb-4">
           {{ mode == 'login' ? 'Log in' : 'Create an account' }}
-          to discover and manage amazing events.
+          to discover and manage amazing events or
+          {{ mode == 'login' ? 'sign up' : 'log in' }} below.
         </p>
 
         <!-- LOGIN / signup FORM -->
         <div class="space-y-6">
+          <!-- FullName -->
+          <div v-if="mode === 'signup'">
+            <label class="text-sm text-slate-600">Full Name</label>
+            <div
+              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+            >
+              <span class="mr-2">✉️</span>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                class="w-full outline-none text-sm"
+              />
+            </div>
+          </div>
+
+          <!-- sign up as host -->
+          <div v-if="mode === 'signup_as_host'">
+            <label class="text-sm text-slate-600">Host Name</label>
+            <div
+              class="flex items-center mt-2 border rounded-lg px-3 py-2 focus-within:border-purple-500 shadow-sm"
+            >
+              <span class="mr-2">✉️</span>
+              <input
+                type="text"
+                placeholder="Enter your host alias"
+                class="w-full outline-none text-sm"
+              />
+            </div>
+          </div>
+
           <!-- EMAIL -->
           <div>
             <label class="text-sm text-slate-600">Email</label>
@@ -50,18 +87,30 @@
             </div>
           </div>
 
-          <!-- FORGOT PASSWORD -->
-          <div class="text-right">
-            <span class="text-sm text-purple-600 hover:underline cursor-pointer">
+          <!-- host signup and forget password-->
+          <div class="flex" :class="mode === 'signup' ? 'justify-between' : ''">
+            <!-- signup as host -->
+
+            <div
+              @click="signupAsHost()"
+              v-if="mode === 'signup'"
+              class="text-sm text-purple-600 hover:underline cursor-pointer"
+            >
+              Signup as host?
+            </div>
+
+            <!-- FORGOT PASSWORD -->
+
+            <div class="text-sm text-purple-600 hover:underline cursor-pointer">
               Forgot password?
-            </span>
+            </div>
           </div>
 
           <!-- LOGIN BUTTON -->
           <button
             class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
           >
-            Log In
+            {{ mode === 'login' ? 'Log In' : 'Sign Up' }}
           </button>
         </div>
 
@@ -133,6 +182,11 @@ export default {
       this.mode = newMode
 
       this.$router.push({ path: '/auth', query: { mode: newMode } })
+    },
+
+    signupAsHost() {
+      this.mode = 'signup_as_host'
+      this.$router.push({ path: '/auth', query: { mode: 'signup_as_host' } })
     },
   },
   computed: {

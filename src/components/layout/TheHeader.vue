@@ -44,7 +44,7 @@
 
     <!-- LOGIN AND SIGNUP BUTTONS -->
     <div class="hidden md:flex space-x-3">
-      <router-link to="/auth?mode=login" v-if="isAuthPage || authMode !== 'login'">
+      <router-link to="/auth?mode=login" v-if="!isAuthPage || authMode !== 'login'">
         <button
           class="px-5 py-2 rounded-lg text-primary font-medium border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
         >
