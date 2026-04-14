@@ -41,6 +41,9 @@
                   placeholder="Enter your full name"
                   class="w-full outline-none text-sm"
                 />
+                <p v-if="errors.fullName" class="text-red-500 text-xs mt-1">
+                  {{ errors.fullName }}
+                </p>
               </div>
             </div>
 
@@ -57,6 +60,9 @@
                   placeholder="Enter your host alias"
                   class="w-full outline-none text-sm"
                 />
+                <p v-if="errors.hostName" class="text-red-500 text-xs mt-1">
+                  {{ errors.hostName }}
+                </p>
               </div>
             </div>
 
@@ -73,6 +79,9 @@
                   placeholder="Enter your email"
                   class="w-full outline-none text-sm"
                 />
+                <p v-if="errors.email" class="text-red-500 text-xs mt-1">
+                  {{ errors.email }}
+                </p>
               </div>
             </div>
 
@@ -89,7 +98,13 @@
                   placeholder="Enter your password"
                   class="w-full outline-none text-sm"
                 />
+                <p v-if="errors.password" class="text-red-500 text-xs mt-1">
+                  {{ errors.password }}
+                </p>
               </div>
+              <p v-if="errors.general" class="text-red-500 text-sm text-center">
+                {{ errors.general }}
+              </p>
             </div>
 
             <!-- host signup and forget password-->
@@ -195,6 +210,8 @@ export default {
       password: '',
       fullName: '',
       hostName: '',
+
+      errors: {},
     }
   },
 
@@ -253,48 +270,69 @@ export default {
       }
     },
 
-    handleSubmit() {
-      if (this.mode === 'login') {
-        this.$store.dispatch('auth/login', {
-          email: this.email,
-          password: this.password,
-        })
+    async handleSubmit() {
+      const isValid = this.validateForm()
 
-        console.log('Login submitted with:', {
-          email: this.email,
-          password: this.password,
-        })
-      } else if (this.mode === 'signup') {
-        this.$store.dispatch('auth/signup', {
-          fullName: this.fullName,
-          email: this.email,
-          password: this.password,
-          role: 'attendee',
-        })
+      if (!isValid) return
 
-        console.log('Signup submitted with:', {
-          fullName: this.fullName,
-          email: this.email,
-          password: this.password,
-          role: 'attendee',
-        })
-      } else if (this.mode === 'signup_as_host') {
-        this.$store.dispatch('auth/signup', {
-          hostName: this.hostName,
-          email: this.email,
-          password: this.password,
-          role: 'host',
-        })
+      try {
+        if (this.mode === 'login') {
+          await this.$store.dispatch('auth/login', {
+            email: this.email,
+            password: this.password,
+          })
+        } else if (this.mode === 'signup') {
+          await this.$store.dispatch('auth/signup', {
+            fullName: this.fullName,
+            email: this.email,
+            password: this.password,
+            role: 'attendee',
+          })
+        } else if (this.mode === 'signup_as_host') {
+          await this.$store.dispatch('auth/signup', {
+            hostName: this.hostName,
+            email: this.email,
+            password: this.password,
+            role: 'host',
+          })
+        }
 
-        console.log('Signup as host submitted with:', {
-          hostName: this.hostName,
-          email: this.email,
-          password: this.password,
-          role: 'host',
-        })
-      } else {
-        this.$router.push('/auth?mode=login')
+        // redirect after success
+        this.$router.push('/events')
+      } catch (err) {
+        console.error(err)
+        this.errors.general = err.message
       }
+    },
+
+    validateForm() {
+      this.errors = {}
+
+      // EMAIL
+      if (!this.email) {
+        this.errors.email = 'Email is required'
+      } else if (!this.email.includes('@')) {
+        this.errors.email = 'Enter a valid email'
+      }
+
+      // PASSWORD
+      if (!this.password) {
+        this.errors.password = 'Password is required'
+      } else if (this.password.length < 6) {
+        this.errors.password = 'Password must be at least 6 characters'
+      }
+
+      // FULL NAME (only for signup)
+      if (this.mode === 'signup' && !this.fullName) {
+        this.errors.fullName = 'Full name is required'
+      }
+
+      // HOST NAME (only for host signup)
+      if (this.mode === 'signup_as_host' && !this.hostName) {
+        this.errors.hostName = 'Host name is required'
+      }
+
+      return Object.keys(this.errors).length === 0
     },
   },
 }
