@@ -269,6 +269,7 @@ export default {
           fullName: this.fullName,
           email: this.email,
           password: this.password,
+          role: 'attendee',
         })
 
         console.log('Signup submitted with:', {
@@ -289,6 +290,7 @@ export default {
           hostName: this.hostName,
           email: this.email,
           password: this.password,
+          role: 'host',
         })
       } else {
         this.$router.push('/auth?mode=login')

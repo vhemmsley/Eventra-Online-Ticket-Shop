@@ -8,6 +8,7 @@ import './index.css'
 import TheHeader from './components/layout/TheHeader.vue'
 import EventFilter from './components/layout/EventFilter.vue'
 import EventCard from './components/layout/EventCard.vue'
+import WhiteCard from './components/ui/WhiteCard.vue'
 
 // ui components
 import BaseCard from './components/ui/BaseCard.vue'
@@ -34,6 +35,7 @@ app.component('event-card', EventCard)
 app.component('base-card', BaseCard)
 app.component('base-spinner', BaseSpinner)
 app.component('skeleton-loader', SkeletonLoader)
+app.component('white-card', WhiteCard)
 
 // register font-awesome-icon component globally
 app.component('font-awesome-icon', FontAwesomeIcon)

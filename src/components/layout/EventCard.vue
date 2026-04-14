@@ -15,14 +15,14 @@
             <span
               :class="[
                 'px-3 py-1 text-white  rounded-full',
-                event.status === 'On Sale'
+                event.saleStatus === 'On Sale'
                   ? 'bg-green-500'
-                  : event.status === 'Selling Fast'
+                  : event.saleStatus === 'Selling Fast'
                     ? 'bg-orange-400'
                     : 'bg-red-500',
               ]"
             >
-              {{ event.status }}
+              {{ event.saleStatus }}
             </span>
           </div>
 

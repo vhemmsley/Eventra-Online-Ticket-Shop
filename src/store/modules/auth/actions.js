@@ -9,8 +9,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 // GOOGLE AUTH IMPORTS
-
-import { signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 
 export default {
   // sign up action
@@ -47,34 +46,39 @@ export default {
   },
 
   // google log in action
+
   async googleSignIn({ commit }) {
-    const provider = new googleAuthProvider()
+    try {
+      const result = await signInWithPopup(auth, googleAuthProvider)
 
-    const result = await signInWithPopup(auth, googleProvider)
+      const user = result.user
+      const userRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userRef)
 
-    const user = result.user
-    const userRef = doc(db, 'users', user.uid)
-    const userDoc = await getDoc(userRef)
+      let role = 'attendee'
 
-    let role = 'attendee'
+      if (!userDoc.exists()) {
+        await setDoc(userRef, {
+          email: user.email,
+          role: 'attendee',
+          provider: 'google',
+        })
+      } else {
+        role = userDoc.data().role
+      }
 
-    if (!userDoc.exists()) {
-      await setDoc(userRef, {
-        email: user.email,
-        role: 'attendee',
+      commit('setUser', {
+        user: user.uid,
+        token: user.accessToken,
+        role,
         provider: 'google',
       })
-    } else {
-      role = userDoc.data().role
+    } catch (error) {
+      console.error('Google Sign-In Error:', error)
+      throw error
     }
-
-    commit('setUser', {
-      user: user.uid,
-      token: user.accessToken,
-      role,
-      provider: 'google',
-    })
   },
+
   // logout action
   logout(context) {
     context.commit('logout')
