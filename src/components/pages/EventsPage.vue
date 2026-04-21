@@ -83,7 +83,6 @@ export default {
 
   data() {
     return {
-      isLoading: true,
       spinnerLoadingTime: 400,
       searchQuery: '',
       selectedCategory: 'All',
@@ -95,11 +94,17 @@ export default {
     setTimeout(() => {
       this.isLoading = false
     }, this.spinnerLoadingTime)
+
+    this.$store.dispatch('events/fetchEvents')
   },
 
   computed: {
     locations() {
       return [...new Set(this.$store.state.events.events.map((e) => e.location))]
+    },
+
+    isLoading() {
+      return this.$store.state.events.isLoading
     },
 
     filteredEvents() {

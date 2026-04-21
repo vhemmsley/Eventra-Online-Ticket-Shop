@@ -281,27 +281,17 @@ export default {
             email: this.email,
             password: this.password,
           })
-        } else if (this.mode === 'signup') {
+        } else {
           await this.$store.dispatch('auth/signup', {
-            fullName: this.fullName,
             email: this.email,
             password: this.password,
-            role: 'attendee',
-          })
-        } else if (this.mode === 'signup_as_host') {
-          await this.$store.dispatch('auth/signup', {
-            hostName: this.hostName,
-            email: this.email,
-            password: this.password,
-            role: 'host',
+            role: this.mode === 'signup_as_host' ? 'host' : 'attendee',
           })
         }
 
-        // redirect after success
-        this.$router.push('/events')
+        this.$router.push('/host/dashboard')
       } catch (err) {
-        console.error(err)
-        this.errors.general = err.message
+        alert(err.message)
       }
     },
 

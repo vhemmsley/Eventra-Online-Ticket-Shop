@@ -6,7 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
-      user: null,
+      userId: null,
       role: null, // attendee or host
       token: null,
       didAutoLogout: false,

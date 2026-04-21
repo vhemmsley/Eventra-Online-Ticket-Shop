@@ -4,7 +4,25 @@
       <div class="flex flex-col">
         <!-- picture div -->
         <div class="relative">
-          <img :src="event.image" class="rounded-t-xl" />
+          <!-- image block -->
+          <div class="relative w-full h-[200px] overflow-hidden rounded-t-xl">
+            <!-- Skeleton loader -->
+            <div
+              v-if="!imageLoaded"
+              class="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200"
+            ></div>
+
+            <!-- Actual Image -->
+            <img
+              :src="event.image"
+              @load="imageLoaded = true"
+              :class="[
+                'w-full h-full object-cover transition-all duration-700',
+                imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105',
+              ]"
+            />
+          </div>
+
           <!-- feeatures , status tag -->
           <div class="absolute top-3 left-3 font-semibold flex text-xs space-x-2">
             <span
@@ -114,6 +132,12 @@
 export default {
   name: 'EventCard',
   props: ['event'],
+
+  data() {
+    return {
+      imageLoaded: false,
+    }
+  },
 
   methods: {
     favouriteEvent(id) {

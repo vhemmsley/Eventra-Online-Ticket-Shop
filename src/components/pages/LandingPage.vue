@@ -403,7 +403,7 @@ export default {
   data() {
     return {
       selectedCategory: 'All',
-      isLoading: true,
+
       spinnerLoadingTime: 400,
 
       activeFaq: null,
@@ -438,6 +438,8 @@ export default {
   },
 
   mounted() {
+    this.$store.dispatch('events/fetchFeaturedEvents')
+
     setTimeout(() => {
       this.isLoading = false
     }, this.spinnerLoadingTime)
@@ -461,7 +463,11 @@ export default {
 
   computed: {
     featuredEvents() {
-      return this.$store.getters['events/featuredEvents'](this.selectedCategory)
+      return this.$store.state.events.featuredEvents
+    },
+
+    isLoading() {
+      return this.$store.state.events.isLoading
     },
   },
 }

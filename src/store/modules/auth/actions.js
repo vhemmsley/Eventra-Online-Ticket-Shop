@@ -15,34 +15,51 @@ export default {
   // sign up action
 
   async signup(context, payload) {
-    const action = await createUserWithEmailAndPassword(auth, payload.email, payload.password)
+    try {
+      const action = await createUserWithEmailAndPassword(auth, payload.email, payload.password)
 
-    const user = action.user
-    // save role to firebase
-    // user gets an id , accessToken by default when created by auth
+      const user = action.user
 
-    await setDoc(doc(db, 'users', user.uid), { email: payload.email, role: payload.role }) //host or attendee\
+      await setDoc(doc(db, 'users', user.uid), {
+        email: payload.email,
+        role: payload.role || 'attendee',
+      })
 
-    context.commit('setUser', { user: user.uid, token: user.accessToken, role: payload.role })
+      context.commit('setUser', {
+        userId: user.uid,
+        token: user.accessToken,
+        role: payload.role || 'attendee',
+      })
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        throw new Error('This email already exists. Try logging in instead.')
+      }
+      throw error
+    }
   },
-
   // log in action
 
   async login(context, payload) {
     const action = await signInWithEmailAndPassword(auth, payload.email, payload.password)
+    console.log('LOGIN STARTED', payload)
 
     const user = action.user
-
-    // get role from firebase
+    console.log('USER FROM FIREBASE', user)
+    const token = await user.getIdToken()
 
     const userDoc = await getDoc(doc(db, 'users', user.uid))
-    const role = userDoc.data().role
+    const role = userDoc.exists() ? userDoc.data().role : 'attendee'
 
-    context.commit('setUser', {
-      user: user.uid,
-      token: user.accessToken,
+    const userData = {
+      userId: user.uid,
+      token,
       role,
-    })
+    }
+
+    context.commit('setUser', userData)
+
+    // ✅ ADD THIS
+    localStorage.setItem('user', JSON.stringify(userData))
   },
 
   // google log in action
@@ -52,6 +69,8 @@ export default {
       const result = await signInWithPopup(auth, googleAuthProvider)
 
       const user = result.user
+      const token = await user.getIdToken()
+
       const userRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userRef)
 
@@ -67,16 +86,18 @@ export default {
         role = userDoc.data().role
       }
 
-      commit('setUser', {
-        user: user.uid,
-        token: user.accessToken,
+      const userData = {
+        userId: user.uid,
+        token,
         role,
-        provider: 'google',
-      })
+      }
+      commit('setUser', userData)
     } catch (error) {
-      console.error('Google Sign-In Error:', error)
+      console.error(error)
       throw error
     }
+
+    localStorage.setItem('user', JSON.stringify(userData))
   },
 
   // logout action

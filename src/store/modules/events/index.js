@@ -6,8 +6,9 @@ export default {
   namespaced: true,
   state() {
     return {
-      statusOptions: ['On Sale', 'Selling Fast', 'Sold Out'],
-      events: [
+      isLoading: false,
+      hostEvents: [],
+      eventa: [
         {
           id: 1001,
           title: 'Neon Nights Music Festival',
@@ -20,7 +21,7 @@ export default {
           ticketsLeft: 45,
           totalTickets: 500,
           saleStatus: 'Selling Fast',
-          eventStatus: 'active',
+          eventStatus: 'Sold Out',
           featured: true,
           isFavorite: false,
           image:
@@ -116,6 +117,12 @@ export default {
         },
       ],
 
+      events: [],
+
+      featuredEvents: [],
+
+      // options
+      statusOptions: ['On Sale', 'Selling Fast', 'Sold Out'],
       categories: ['Concert', 'Conference', 'Carnival', 'Entertainment', 'Party', 'Dinner'],
     }
   },
