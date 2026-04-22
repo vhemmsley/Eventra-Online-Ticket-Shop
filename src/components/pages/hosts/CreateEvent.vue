@@ -213,7 +213,7 @@ export default {
     },
 
     async handleSubmit() {
-      alert('please confirmm event details before submission')
+      alert('Please Confirm Event Details Before Submission')
 
       if (!this.validateForm()) return
 
@@ -253,8 +253,8 @@ export default {
           ticketsLeft: Number(this.totalTickets),
 
           attendees: 0,
-          saleStatus: 'On Sale',
-          eventStatus: 'active',
+          saleStatus: 'OnSale',
+          eventStatus: 'on_sale',
           featured: this.featured,
 
           image: imageUrl,
@@ -262,14 +262,14 @@ export default {
 
           createdAt: serverTimestamp(),
         })
-
-        this.$router.push('/host/dashboard')
       } catch (err) {
         console.error(err)
         alert(err.message)
       } finally {
         this.isSubmitting = false
       }
+
+      this.$router.push('/host/dashboard')
     },
   },
 }
