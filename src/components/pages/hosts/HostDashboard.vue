@@ -76,12 +76,27 @@
             <!-- STATUS -->
             <div class="absolute top-3 left-3">
               <span
+                v-if="event.featured"
+                class="px-3 py-1 text-white mr-2 text-xs bg-primary-gradient rounded-full"
+                >Featured</span
+              >
+              <span
                 :class="[
-                  'px-3 py-1 text-xs rounded-full text-white',
-                  event.eventStatus === 'active' ? 'bg-green-500' : 'bg-red-500',
+                  'px-3 py-1 text-white text-xs rounded-full',
+                  event.eventStatus === 'on_sale'
+                    ? 'bg-green-500'
+                    : event.eventStatus === 'paused'
+                      ? 'bg-yellow-500'
+                      : 'bg-red-500',
                 ]"
               >
-                {{ event.eventStatus }}
+                {{
+                  event.eventStatus === 'on_sale'
+                    ? 'On Sale'
+                    : event.eventStatus === 'paused'
+                      ? 'Paused'
+                      : 'Sold Out'
+                }}
               </span>
             </div>
           </div>
@@ -120,7 +135,7 @@
             <!-- ACTIONS -->
             <div class="flex gap-3 mt-4">
               <router-link
-                :to="`/host/manage/${event.id}`"
+                :to="`/host/manage-event/${event.id}`"
                 class="flex-1 text-center py-2 text-sm border rounded-lg hover:bg-slate-100"
               >
                 Manage
@@ -160,6 +175,7 @@ export default {
     activeEvents() {
       return this.hostEvents?.filter((e) => e.eventStatus === 'active')?.length || 0
     },
+
     totalTicketsSold() {
       return (
         this.hostEvents?.reduce((sum, e) => {

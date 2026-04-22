@@ -25,6 +25,32 @@
           {{ mode == 'login' ? 'sign up' : 'log in' }} below.
         </p>
 
+        <!-- ERROR ALERT -->
+        <div
+          v-if="errors.auth"
+          class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm flex items-start gap-2 animate-fade-in"
+        >
+          <span class="text-lg">⚠️</span>
+          <div>
+            <p class="font-medium">{{ errors.auth }}</p>
+
+            <!-- suggestion -->
+            <p v-if="mode === 'login'" class="text-xs mt-1 text-red-500">
+              Looks like you don’t have an account?
+              <span @click="toggleMode" class="underline cursor-pointer font-medium">
+                Sign up instead
+              </span>
+            </p>
+
+            <p v-if="mode === 'signup'" class="text-xs mt-1 text-red-500">
+              Looks like you already have an account?
+              <span @click="toggleMode" class="underline cursor-pointer font-medium">
+                Log in instead
+              </span>
+            </p>
+          </div>
+        </div>
+
         <!-- LOGIN / signup FORM -->
         <form @submit.prevent="handleSubmit()">
           <div class="space-y-6">
@@ -139,9 +165,23 @@
             <!-- LOGIN BUTTON -->
             <button
               type="submit"
-              class="w-full py-3 rounded-lg text-white bg-primary-gradient hover:scale-[1.02] transition duration-200 shadow-md hover:shadow-xl"
+              :disabled="isSubmitting"
+              :class="[
+                'w-full py-3 rounded-lg text-white transition duration-200 shadow-md',
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed opacity-70 animate-pulse'
+                  : 'bg-primary-gradient hover:scale-[1.02] hover:shadow-xl',
+              ]"
             >
-              {{ mode === 'login' ? 'Log In' : 'Sign Up' }}
+              {{
+                isSubmitting
+                  ? mode === 'login'
+                    ? 'Logging in ...'
+                    : 'Signing up ...'
+                  : mode === 'login'
+                    ? 'Log In'
+                    : 'Sign Up'
+              }}
             </button>
           </div>
         </form>
@@ -210,7 +250,7 @@ export default {
       password: '',
       fullName: '',
       hostName: '',
-
+      isSubmitting: false,
       errors: {},
     }
   },
@@ -249,16 +289,25 @@ export default {
         this.mode = 'login'
       }
     },
+
+    email() {
+      this.errors.auth = null
+    },
+    password() {
+      this.errors.auth = null
+    },
   },
 
   methods: {
     toggleMode() {
       const newMode = this.mode === 'login' ? 'signup' : 'login'
       this.mode = newMode
+      this.errors.auth = null // reset auth errors when toggling
     },
 
     signupAsHost() {
       this.mode = this.mode === 'signup' ? 'signup_as_host' : 'signup'
+      this.errors.auth = null
     },
 
     async signinWithGoogle() {
@@ -271,9 +320,16 @@ export default {
     },
 
     async handleSubmit() {
+      this.isSubmitting = true
+      setTimeout(() => {
+        this.isSubmitting = false
+      }, 1000)
+
       const isValid = this.validateForm()
 
       if (!isValid) return
+
+      this.errors.auth = null // reset previous error
 
       try {
         if (this.mode === 'login') {
@@ -289,9 +345,16 @@ export default {
           })
         }
 
-        this.$router.push('/host/dashboard')
+        // push to user or host dashboard based on role
+        const role = this.$store.getters['auth/role']
+
+        if (role === 'host') {
+          this.$router.push('/host/dashboard')
+        } else {
+          this.$router.push('/events')
+        }
       } catch (err) {
-        alert(err.message)
+        this.handleAuthError(err)
       }
     },
 
@@ -323,6 +386,34 @@ export default {
       }
 
       return Object.keys(this.errors).length === 0
+    },
+
+    handleAuthError(error) {
+      let message = 'Something went wrong. Please try again.'
+
+      switch (error.code) {
+        case 'auth/user-not-found':
+          message = 'No account found with this email.'
+          break
+
+        case 'auth/wrong-password':
+          message = 'Incorrect password. Try again.'
+          break
+
+        case 'auth/invalid-email':
+          message = 'Invalid email format.'
+          break
+
+        case 'auth/email-already-in-use':
+          message = 'This email already exists. Try logging in instead.'
+          break
+
+        case 'auth/popup-closed-by-user':
+          message = 'Google sign-in was cancelled.'
+          break
+      }
+
+      this.errors.auth = message
     },
   },
 }

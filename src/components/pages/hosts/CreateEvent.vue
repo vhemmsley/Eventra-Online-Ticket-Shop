@@ -160,6 +160,36 @@ export default {
       this.imagePreview = URL.createObjectURL(file)
     },
 
+    toSentenceCase(text) {
+      if (!text) return ''
+      return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())
+    },
+
+    formatTimeTo12Hr(time) {
+      if (!time) return ''
+
+      const [hour, minute] = time.split(':')
+      let h = parseInt(hour)
+      const ampm = h >= 12 ? 'PM' : 'AM'
+
+      h = h % 12 || 12
+
+      return `${h}:${minute} ${ampm}`
+    },
+
+    formatDate(date) {
+      if (!date) return ''
+
+      const d = new Date(date)
+
+      return d.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    },
+
     validateForm() {
       this.errors = {}
 
@@ -183,39 +213,48 @@ export default {
     },
 
     async handleSubmit() {
+      alert('please confirmm event details before submission')
+
       if (!this.validateForm()) return
 
       this.isSubmitting = true
 
       try {
-        // 🔥 set user id: later upload to Firebase
         const userId = this.$store.getters['auth/userId']
 
-        // upload image to Firebase Storage
+        if (!userId) {
+          throw new Error('User not authenticated')
+        }
+
+        // 🔥 FORMAT DATA
+        const formattedTitle = this.toSentenceCase(this.title)
+        const formattedLocation = this.toSentenceCase(this.location)
+        const formattedCategory = this.toSentenceCase(this.category)
+        const formattedDate = this.formatDate(this.date)
+        const formattedTime = this.formatTimeTo12Hr(this.time)
+
+        // 🔥 Upload image
         const fileName = `${Date.now()}_${this.imageFile.name}`
         const storageRef = ref(storage, `events/${userId}/${fileName}`)
+
         await uploadBytes(storageRef, this.imageFile)
         const imageUrl = await getDownloadURL(storageRef)
 
-        const defaultEventData = {
-          attendees: 0,
-          saleStatus: 'On Sale',
-          eventStatus: 'active',
-        }
-
+        // 🔥 Save to Firestore
         await addDoc(collection(db, 'events'), {
-          ...defaultEventData,
-
-          title: this.title,
-          category: this.category,
-          location: this.location,
-          date: this.date,
-          time: this.time,
+          title: formattedTitle,
+          category: formattedCategory,
+          location: formattedLocation,
+          date: formattedDate,
+          time: formattedTime,
 
           price: Number(this.price),
           totalTickets: Number(this.totalTickets),
           ticketsLeft: Number(this.totalTickets),
 
+          attendees: 0,
+          saleStatus: 'On Sale',
+          eventStatus: 'active',
           featured: this.featured,
 
           image: imageUrl,
@@ -224,15 +263,11 @@ export default {
           createdAt: serverTimestamp(),
         })
 
-        // simulate delay
-        setTimeout(() => {
-          this.isSubmitting = false
-          alert('Event created (next: Firebase)')
-        }, 1000)
-
         this.$router.push('/host/dashboard')
       } catch (err) {
         console.error(err)
+        alert(err.message)
+      } finally {
         this.isSubmitting = false
       }
     },

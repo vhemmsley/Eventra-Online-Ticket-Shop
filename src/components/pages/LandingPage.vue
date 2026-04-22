@@ -105,7 +105,9 @@
             <!-- bubble text-->
             <div>
               <p class="text-sm font-semibold">Next Event</p>
-              <h3 class="text-xs text-slate-500">Tech Fest 2025</h3>
+              <h3 class="text-xs text-slate-500">
+                {{ nextUpcomingEvent?.title || 'No upcoming events' }}
+              </h3>
             </div>
           </div>
         </div>
@@ -439,6 +441,7 @@ export default {
 
   mounted() {
     this.$store.dispatch('events/fetchFeaturedEvents')
+    this.$store.dispatch('events/fetchEvents')
 
     setTimeout(() => {
       this.isLoading = false
@@ -462,8 +465,25 @@ export default {
   },
 
   computed: {
+    nextUpcomingEvent() {
+      const events = this.$store.state.events.events || []
+
+      const today = new Date()
+
+      const upcomingEvents = events
+        .filter((event) => new Date(event.date) >= today)
+        .sort((a, b) => new Date(a.date) - new Date(b.date)) // 👈 sort properly
+
+      return upcomingEvents.length ? upcomingEvents[0] : null
+    },
     featuredEvents() {
-      return this.$store.state.events.featuredEvents
+      const featuredEvents = this.$store.state.events.featuredEvents
+
+      if (this.selectedCategory === 'All') {
+        return featuredEvents
+      }
+
+      return featuredEvents.filter((event) => event.category === this.selectedCategory)
     },
 
     isLoading() {

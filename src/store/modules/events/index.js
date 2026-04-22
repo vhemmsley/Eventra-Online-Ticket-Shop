@@ -122,7 +122,7 @@ export default {
       featuredEvents: [],
 
       // options
-      statusOptions: ['On Sale', 'Selling Fast', 'Sold Out'],
+      statusOptions: ['On Sale', 'Paused', 'Sold Out'],
       categories: ['Concert', 'Conference', 'Carnival', 'Entertainment', 'Party', 'Dinner'],
     }
   },

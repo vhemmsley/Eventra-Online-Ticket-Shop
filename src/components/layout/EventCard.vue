@@ -32,15 +32,21 @@
             >
             <span
               :class="[
-                'px-3 py-1 text-white  rounded-full',
-                event.saleStatus === 'On Sale'
+                'px-3 py-1 text-white rounded-full',
+                event.eventStatus === 'on_sale'
                   ? 'bg-green-500'
-                  : event.saleStatus === 'Selling Fast'
-                    ? 'bg-orange-400'
+                  : event.eventStatus === 'paused'
+                    ? 'bg-yellow-500'
                     : 'bg-red-500',
               ]"
             >
-              {{ event.saleStatus }}
+              {{
+                event.eventStatus === 'on_sale'
+                  ? 'On Sale'
+                  : event.eventStatus === 'paused'
+                    ? 'Paused'
+                    : 'Sold Out'
+              }}
             </span>
           </div>
 
@@ -108,17 +114,19 @@
 
           <!-- action button -->
           <button
-            :disabled="event.status === 'Sold Out'"
+            :disabled="event.eventStatus !== 'on_sale'"
             :class="[
               'w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2',
-              event.status === 'Sold Out'
+              event.eventStatus !== 'on_sale'
                 ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                 : 'bg-primary-gradient text-white hover:shadow-lg hover:scale-[1.02]',
             ]"
           >
-            <span v-if="event.status === 'Sold Out'">Sold Out</span>
+            <span v-if="event.eventStatus === 'sold_out'">Sold Out</span>
+            <span v-else-if="event.eventStatus === 'paused'">Sales Paused</span>
             <span v-else>Get Tickets</span>
-            <font-awesome-icon v-if="event.status !== 'Sold Out'" icon="ticket" />
+
+            <font-awesome-icon v-if="event.eventStatus === 'on_sale'" icon="ticket" />
           </button>
         </div>
       </div>

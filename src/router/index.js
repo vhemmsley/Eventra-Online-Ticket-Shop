@@ -1,6 +1,7 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
 import LandingPage from '@/components/pages/LandingPage.vue'
 import EventsPage from '@/components/pages/EventsPage.vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import AuthPage from '@/components/pages/Auth/AuthPage.vue'
 
 import HostDashboard from '@/components/pages/hosts/HostDashboard.vue'
