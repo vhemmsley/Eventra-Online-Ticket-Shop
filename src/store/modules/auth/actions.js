@@ -23,12 +23,20 @@ export default {
       await setDoc(doc(db, 'users', user.uid), {
         email: payload.email,
         role: payload.role || 'attendee',
+        // user details
+        fullName: payload.fullName || payload.hostName || '',
+
+        phone: payload.phoneNumber || '',
       })
 
       context.commit('setUser', {
         userId: user.uid,
         token: user.accessToken,
         role: payload.role || 'attendee',
+
+        fullName: user.fullName || user.hostName || '',
+        email: user.email,
+        phone: user.phoneNumber || '',
       })
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
@@ -47,13 +55,19 @@ export default {
     console.log('USER FROM FIREBASE', user)
     const token = await user.getIdToken()
 
-    const userDoc = await getDoc(doc(db, 'users', user.uid))
+    const userDoc = await getDoc(
+      doc(db, 'users', user.uid, user.fullName, user.email, user.phoneNumber),
+    )
+
     const role = userDoc.exists() ? userDoc.data().role : 'attendee'
 
     const userData = {
       userId: user.uid,
       token,
       role,
+      fullName,
+      email,
+      phoneNumber,
     }
 
     context.commit('setUser', userData)

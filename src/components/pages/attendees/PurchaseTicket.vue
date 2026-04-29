@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen bg-secondary-gradient px-4 md:px-[5%] py-6 md:py-12">
+  <div class="min-h-screen bg-hero-gradient px-4 md:px-[5%] py-6 md:py-12">
     <!-- LOADING -->
     <div v-if="isLoading" class="max-w-6xl mx-auto animate-pulse">
       <div class="h-96 bg-slate-200 rounded-2xl"></div>
     </div>
 
     <!-- MAIN -->
-    <div v-else class="max-w-6xl mx-auto">
+    <div v-else class="max-w-5xl mx-auto">
       <!-- Back Button -->
       <button
         @click="$router.back()"
-        class="mb-6 flex items-center gap-2 text-slate-500 hover:text-purple-600 transition group"
+        class="mb-6 flex items-center gap-2 text-slate-900 hover:text-purple-600 transition group"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@
         <span class="text-sm font-medium">Back to Events</span>
       </button>
 
-      <div class="grid lg:grid-cols-5 gap-8">
+      <div class="flex flex-col lg:grid lg:grid-cols-5 gap-6 lg:gap-8">
         <!-- LEFT: Event Details (3 columns) -->
         <div class="lg:col-span-3 space-y-6">
           <!-- Hero Image -->
@@ -81,6 +81,8 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-slate-800">{{ event.title }}</h1>
                 <p class="text-slate-500 mt-1">{{ event.category }}</p>
               </div>
+
+              <!-- toggle fav button-->
               <button
                 @click="toggleFavorite"
                 class="p-2 rounded-full hover:bg-slate-100 transition"
@@ -105,6 +107,7 @@
                 <div
                   class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"
                 >
+                  <!-- calender icon svg -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -130,6 +133,7 @@
                 <div
                   class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"
                 >
+                  <!-- clock icon svg -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -155,6 +159,7 @@
                 <div
                   class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600"
                 >
+                  <!-- location icon svg -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -192,11 +197,25 @@
           </white-card>
         </div>
 
+        <!-- BUYER INFO -->
+        <div class="mb-6">
+          <h2 class="text-lg font-semibold mb-4">Your Details</h2>
+
+          <div class="space-y-3">
+            <input v-model="buyer.fullName" type="text" placeholder="Full Name" class="input" />
+
+            <input v-model="buyer.email" type="email" placeholder="Email Address" class="input" />
+
+            <input v-model="buyer.phone" type="tel" placeholder="Phone Number" class="input" />
+          </div>
+        </div>
+
         <!-- RIGHT: Purchase Panel (2 columns) -->
         <div class="lg:col-span-2">
-          <div class="sticky top-6">
+          <div class="lg:sticky lg:top-6">
             <white-card class="p-6 md:p-8 shadow-xl">
               <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <!-- ticket icon svg-->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -218,13 +237,30 @@
               <div class="mb-6">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-sm text-slate-500">Available tickets</span>
-                  <span
-                    class="text-sm font-semibold"
-                    :class="event.ticketsLeft < 10 ? 'text-red-500' : 'text-green-600'"
-                  >
-                    {{ event.ticketsLeft }} left
-                  </span>
+
+                  <div class="inline-flex items-center gap-2">
+                    <!-- ping indicator -->
+                    <span
+                      class="rounded-xl w-2 h-2 animate-ping"
+                      :class="
+                        event.ticketsLeft <= event.totalTickets / 2 ? 'bg-red-500' : 'bg-green-500'
+                      "
+                    ></span>
+
+                    <!-- tickets indicator -->
+                    <span
+                      class="text-sm font-semibold"
+                      :class="
+                        event.ticketsLeft <= event.totalTickets / 2
+                          ? 'text-red-500'
+                          : 'text-green-600'
+                      "
+                    >
+                      {{ event.ticketsLeft }} left
+                    </span>
+                  </div>
                 </div>
+
                 <!-- Progress Bar -->
                 <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
@@ -233,10 +269,12 @@
                     :style="{ width: availabilityPercentage + '%' }"
                   ></div>
                 </div>
+
                 <p
-                  v-if="event.ticketsLeft < 10"
+                  v-if="event.ticketsLeft <= event.totalTickets / 2"
                   class="text-xs text-red-500 mt-1 flex items-center gap-1"
                 >
+                  <!-- red alert svg-->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -264,6 +302,7 @@
                     :disabled="quantity <= 1"
                     class="w-12 h-12 rounded-xl border-2 border-slate-200 flex items-center justify-center text-slate-600 hover:border-purple-500 hover:text-purple-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
                   >
+                    <!-- negative icon svg -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -275,6 +314,8 @@
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
                     </svg>
                   </button>
+
+                  <!-- quantity box -->
 
                   <div class="flex-1">
                     <input
@@ -292,6 +333,7 @@
                     :disabled="quantity >= event.ticketsLeft"
                     class="w-12 h-12 rounded-xl border-2 border-slate-200 flex items-center justify-center text-slate-600 hover:border-purple-500 hover:text-purple-600 disabled:opacity-30 disabled:cursor-not-allowed transition"
                   >
+                    <!-- positive icon svg -->
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -308,6 +350,8 @@
                     </svg>
                   </button>
                 </div>
+
+                <!-- quanity error alert -->
                 <p v-if="quantityError" class="text-red-500 text-xs mt-2 flex items-center gap-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -376,7 +420,12 @@
               <!-- Buy Button -->
               <button
                 @click="purchaseTickets"
-                :disabled="isSubmitting || quantity > event.ticketsLeft || quantity < 1"
+                :disabled="
+                  isSubmitting ||
+                  quantity > event.ticketsLeft ||
+                  quantity < 1 ||
+                  event.eventStatus !== 'on_sale'
+                "
                 class="w-full py-4 bg-primary-gradient text-white rounded-xl font-semibold text-lg hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
               >
                 <span
@@ -386,9 +435,12 @@
                 {{ isSubmitting ? 'Processing...' : 'Confirm Purchase' }}
               </button>
 
+              <!-- Secure payment tag -->
+
               <p
                 class="text-xs text-slate-400 text-center mt-4 flex items-center justify-center gap-1"
               >
+                <!-- padlock svg icon-->
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -414,29 +466,23 @@
 </template>
 
 <style scoped>
-/* Custom number input styling to remove arrows */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  outline: none;
+  transition: 0.2s;
 }
-input[type='number'] {
-  -moz-appearance: textfield;
+
+.input:focus {
+  border-color: #a855f7;
 }
 </style>
 
 <script>
 import { db } from '@/firebase'
-import {
-  doc,
-  getDoc,
-  addDoc,
-  collection,
-  updateDoc,
-  increment,
-  serverTimestamp,
-} from 'firebase/firestore'
-
+import { doc, getDoc, serverTimestamp } from 'firebase/firestore'
 export default {
   data() {
     return {
@@ -447,6 +493,24 @@ export default {
       quantityError: null,
       isSubmitting: false,
       isFavorite: false,
+
+      buyer: {
+        fullName: '',
+        email: '',
+        phone: '',
+      },
+    }
+  },
+
+  mounted() {
+    this.fetchEvent()
+
+    const user = this.$store.getters['auth/user']
+
+    if (user) {
+      this.buyer.fullName = user.fullName || ''
+      this.buyer.email = user.email || ''
+      this.buyer.phone = user.phone || ''
     }
   },
 
@@ -539,7 +603,6 @@ export default {
     async purchaseTickets() {
       this.error = null
 
-      // validation
       if (!this.userId) {
         this.error = 'Please log in to purchase tickets'
         this.$router.push('/auth?mode=login')
@@ -556,32 +619,31 @@ export default {
         return
       }
 
+      if (!this.buyer.fullName || !this.buyer.email || !this.buyer.phone) {
+        this.error = 'Please fill in your details'
+        return
+      }
+
       this.isSubmitting = true
 
       try {
-        // 1. create order
-        await addDoc(collection(db, 'orders'), {
-          eventId: this.eventId,
+        await this.$store.dispatch('client/purchaseTickets', {
           userId: this.userId,
+          eventId: this.eventId,
           quantity: this.quantity,
-          totalPrice: this.grandTotal, // Use grandTotal instead
+          totalPrice: this.grandTotal,
           serviceFee: this.serviceFee,
+          buyer: this.buyer,
           createdAt: serverTimestamp(),
         })
 
-        // 2. reduce tickets
-        await updateDoc(doc(db, 'events', this.eventId), {
-          ticketsLeft: increment(-this.quantity),
-        })
-
-        // 3. redirect with success
+        // ✅ REDIRECT HERE (correct place)
         this.$router.push({
           path: '/events',
           query: { purchased: 'success' },
         })
       } catch (err) {
-        console.error(err)
-        this.error = 'Something went wrong. Please try again.'
+        throw new Error('Something went wrong . Please try again later')
       } finally {
         this.isSubmitting = false
       }

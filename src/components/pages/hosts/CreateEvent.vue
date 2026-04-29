@@ -13,14 +13,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- TITLE -->
           <div class="md:col-span-2">
-            <label class="form-label">Event Title</label>
+            <label class="form-label">Event Title *</label>
             <input v-model="title" type="text" class="form-input" @input="validateField('title')" />
             <p v-if="errors.title" class="error">{{ errors.title }}</p>
           </div>
 
           <!-- CATEGORY -->
           <div>
-            <label class="form-label">Category</label>
+            <label class="form-label">Category *</label>
             <select v-model="category" class="form-input" @change="validateField('category')">
               <option disabled value="">Select category</option>
               <option v-for="cat in categories" :key="cat">{{ cat }}</option>
@@ -30,7 +30,7 @@
 
           <!-- LOCATION -->
           <div>
-            <label class="form-label">Location</label>
+            <label class="form-label">Location *</label>
             <input
               v-model="location"
               type="text"
@@ -43,7 +43,7 @@
           <!-- DATE -->
           <div>
             <label class="form-label"
-              >Date <span class="text-slate-400 font-normal">(optional)</span></label
+              >Date * <span class="text-slate-400 font-normal">(optional)</span></label
             >
             <input
               v-model="date"
@@ -58,7 +58,7 @@
           <!-- TIME -->
           <div>
             <label class="form-label"
-              >Time <span class="text-slate-400 font-normal">(optional)</span></label
+              >Time * <span class="text-slate-400 font-normal">(optional)</span></label
             >
             <input
               v-model="time"
@@ -85,7 +85,7 @@
 
           <!-- TICKETS -->
           <div>
-            <label class="form-label">Total Tickets</label>
+            <label class="form-label">Total Tickets *</label>
             <input
               v-model.number="totalTickets"
               type="number"
@@ -102,9 +102,19 @@
             <label class="text-sm text-slate-600">Add to Featured Events</label>
           </div>
 
+          <div class="md:col-span-2">
+            <label class="form-label">Event Description</label>
+            <textarea
+              v-model="description"
+              class="form-input"
+              @input="validateField('description')"
+            />
+            <p v-if="errors.description" class="error">{{ errors.description }}</p>
+          </div>
+
           <!-- IMAGE UPLOAD -->
           <div class="md:col-span-2">
-            <label class="form-label">Event Image</label>
+            <label class="form-label">Event Image *</label>
 
             <input type="file" @change="handleImageUpload" accept="image/*" />
 
@@ -348,6 +358,10 @@ export default {
         const formattedCategory = this.toSentenceCase(this.category)
         const formattedDate = this.formatDate(this.date)
         const formattedTime = this.formatTimeTo12Hr(this.time)
+        const formattedDescription = this.description
+          ? this.description.trim().charAt(0).toUpperCase() +
+            this.description.trim().slice(1).toLowerCase()
+          : ''
 
         // Upload image
         const fileName = `${Date.now()}_${this.imageFile.name}`
@@ -374,6 +388,7 @@ export default {
           featured: this.featured,
 
           image: imageUrl,
+          description: formattedDescription,
           hostId: userId,
 
           createdAt: serverTimestamp(),

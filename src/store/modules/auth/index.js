@@ -10,6 +10,11 @@ export default {
       role: null, // attendee or host
       token: null,
       didAutoLogout: false,
+
+      //userdetails
+      fullName: null,
+      email: null,
+      phoneNumber: null,
     }
   },
   actions,

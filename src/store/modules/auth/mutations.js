@@ -3,6 +3,10 @@ export default {
     state.userId = payload.userId
     state.token = payload.token
     state.role = payload.role
+
+    state.fullName = payload.fullName
+    state.email = payload.email
+    state.phoneNumber = payload.phoneNumber
   },
 
   logout(state) {

@@ -120,6 +120,7 @@ export default {
       events: [],
 
       featuredEvents: [],
+      favoriteEvents: [],
 
       // options
       statusOptions: ['On Sale', 'Paused', 'Sold Out'],

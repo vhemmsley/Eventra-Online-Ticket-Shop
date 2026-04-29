@@ -64,7 +64,7 @@
           <div
             class="absolute bg-white py-2 px-3 right-2 bottom-3 rounded-xl text-purple-700 font-bold"
           >
-            ₦{{ event.price }}
+            ₦{{ event.price.toLocaleString() }}
           </div>
         </div>
         <!-- event details -->
