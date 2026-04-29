@@ -22,7 +22,7 @@
 
         <button
           @click="deleteEvent"
-          class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
         >
           Delete Event
         </button>
@@ -69,14 +69,36 @@
 
       <!-- SCHEDULE -->
       <section class="grid md:grid-cols-2 gap-6">
+        <!-- DATE -->
         <div>
-          <label class="label">Date</label>
-          <input type="date" v-model="eventData.date" class="input" />
+          <label class="label"
+            >Date <span class="text-slate-400 font-normal">(optional)</span></label
+          >
+          <p class="text-xs text-slate-500 mb-1">Current: {{ event.date }}</p>
+          <input
+            type="date"
+            v-model="eventData.date"
+            :min="minDate"
+            class="input"
+            @change="validateField('date')"
+          />
+          <p v-if="errors.date" class="error">{{ errors.date }}</p>
         </div>
 
+        <!-- TIME -->
         <div>
-          <label class="label">Time</label>
-          <input type="time" v-model="eventData.time" class="input" />
+          <label class="label"
+            >Time <span class="text-slate-400 font-normal">(optional)</span></label
+          >
+          <p class="text-xs text-slate-500 mb-1">Current: {{ event.time }}</p>
+          <input
+            type="time"
+            v-model="eventData.time"
+            :min="minTimeForSelectedDate"
+            class="input"
+            @change="validateField('time')"
+          />
+          <p v-if="errors.time" class="error">{{ errors.time }}</p>
         </div>
       </section>
 
@@ -147,22 +169,15 @@
       </div>
 
       <!-- CONFIRM MODAL -->
-      <div v-if="showConfirm" class="absolute inset-0 bg-black/40 flex items-center justify-center">
-        <div class="bg-white p-6 rounded-xl w-[90%] md:w-[400px]">
-          <h2 class="text-lg font-semibold">Confirm Update</h2>
-          <p class="text-sm text-slate-500 mt-2">Are you sure you want to update this event?</p>
-
-          <div class="flex gap-3 mt-6">
-            <button @click="showConfirm = false" class="flex-1 border py-2 rounded-lg">
-              Cancel
-            </button>
-
-            <button @click="updateEvent" class="flex-1 bg-primary-gradient text-white rounded-lg">
-              Confirm
-            </button>
-          </div>
-        </div>
-      </div>
+      <confirm-modal
+        v-if="showConfirm"
+        title="Confirm Update"
+        message="Are you sure you want to update this event?"
+        confirm-text="Confirm"
+        cancel-text="Cancel"
+        @confirm="updateEvent"
+        @cancel="showConfirm = false"
+      />
 
       <!-- LOADING OVERLAY -->
       <div
@@ -237,6 +252,27 @@ export default {
     categories() {
       return this.$store.getters['events/allCategories']
     },
+
+    minDate() {
+      const today = new Date()
+      return today.toISOString().split('T')[0]
+    },
+
+    minTimeForSelectedDate() {
+      if (!this.eventData.date) return null
+
+      const selectedDate = new Date(this.eventData.date)
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+      if (selectedDate.getTime() === today.getTime()) {
+        const hours = now.getHours().toString().padStart(2, '0')
+        const minutes = now.getMinutes().toString().padStart(2, '0')
+        return `${hours}:${minutes}`
+      }
+
+      return null
+    },
   },
 
   async mounted() {
@@ -244,7 +280,6 @@ export default {
   },
 
   methods: {
-    // ================= FETCH =================
     async fetchEvent() {
       this.isLoading = true
 
@@ -269,7 +304,6 @@ export default {
       this.isLoading = false
     },
 
-    // ================= FORMATTERS =================
     toSentenceCase(str) {
       if (!str) return ''
       return str
@@ -280,6 +314,7 @@ export default {
     },
 
     formatDate(dateStr) {
+      if (!dateStr) return this.event.date
       const date = new Date(dateStr)
       return date.toLocaleDateString('en-US', {
         weekday: 'short',
@@ -290,7 +325,7 @@ export default {
     },
 
     formatTime(timeStr) {
-      if (!timeStr) return ''
+      if (!timeStr) return this.event.time
       const [hour, minute] = timeStr.split(':')
       let h = parseInt(hour)
 
@@ -301,22 +336,57 @@ export default {
       return `${h.toString().padStart(2, '0')}:${minute} ${suffix}`
     },
 
-    // ================= VALIDATION =================
     validate() {
       this.errors = {}
 
       if (!this.eventData.title) this.errors.title = 'Title is required'
-
       if (!this.eventData.location) this.errors.location = 'Location is required'
-
       if (this.eventData.price < 0) this.errors.price = 'Price cannot be negative'
-
       if (this.eventData.totalTickets < 1) this.errors.totalTickets = 'Tickets must be at least 1'
+
+      // Date validation — only if user entered a value
+      if (this.eventData.date) {
+        const selectedDate = new Date(this.eventData.date)
+        const now = new Date()
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+        if (selectedDate < today) {
+          this.errors.date = 'Date cannot be in the past'
+        }
+      }
+
+      // Time validation — only if user entered BOTH date and time
+      if (this.eventData.time) {
+        if (!this.eventData.date) {
+          this.errors.date = 'Please select a date first'
+        } else {
+          const selectedDateTime = new Date(`${this.eventData.date}T${this.eventData.time}`)
+          const now = new Date()
+
+          if (selectedDateTime <= now) {
+            this.errors.time = 'Time must be later than the current time'
+          }
+        }
+      }
 
       return Object.keys(this.errors).length === 0
     },
 
-    // ================= IMAGE =================
+    validateField(field) {
+      if (this.errors[field]) {
+        delete this.errors[field]
+      }
+
+      if (field === 'date') {
+        delete this.errors.time
+      }
+      if (field === 'time') {
+        if (this.errors.date === 'Please select a date first') {
+          delete this.errors.date
+        }
+      }
+    },
+
     handleImageUpload(e) {
       const file = e.target.files[0]
       if (!file) return
@@ -335,7 +405,6 @@ export default {
       return await getDownloadURL(fileRef)
     },
 
-    // ================= SAVE FLOW =================
     openConfirm() {
       if (!this.validate()) return
       this.showConfirm = true
@@ -351,7 +420,6 @@ export default {
         const payload = {
           ...this.eventData,
 
-          // formatting rules
           title: this.toSentenceCase(this.eventData.title),
           location: this.toSentenceCase(this.eventData.location),
 
@@ -376,7 +444,6 @@ export default {
       }
     },
 
-    // ================= DELETE =================
     async deleteEvent() {
       if (!confirm('Delete this event?')) return
 
@@ -387,6 +454,7 @@ export default {
     resetChanges() {
       this.eventData = { ...this.event }
       this.previewImage = null
+      this.errors = {}
     },
   },
 }

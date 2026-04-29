@@ -2,16 +2,17 @@
   <!-- HEADER -->
   <div class="relative section-container pt-3 pb-3">
     <!-- LOGO -->
-    <div class="group flex items-center space-x-2 cursor-pointer">
-      <img src="/favicon.png" alt="" class="w-8 group-hover:scale-110 transition duration-300" />
-      <router-link to="/">
+    <router-link to="/">
+      <div class="group flex items-center space-x-2 cursor-pointer">
+        <img src="/favicon.png" alt="" class="w-8 group-hover:scale-110 transition duration-300" />
+
         <h1
           class="text-3xl font-semibold bg-linear-to-r bg-primary-gradient bg-clip-text text-transparent"
         >
           Eventra
         </h1>
-      </router-link>
-    </div>
+      </div>
+    </router-link>
 
     <!-- DESKTOP NAV -->
     <ul class="hidden md:flex space-x-10 text-slate-700 font-medium">

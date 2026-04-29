@@ -1,5 +1,16 @@
 <template>
   <div class="min-h-screen bg-secondary-gradient px-4 md:px-[8%] py-8">
+    <!-- CONFIRM DELETE MODAL -->
+    <confirm-modal
+      v-if="showConfirm"
+      title="Confirm Delete Event"
+      message="Are you sure you want to delete this event? This action cannot be undone."
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      @confirm="deleteEvent"
+      @cancel="showConfirm = false"
+    />
+
     <!-- HEADER -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
       <div>
@@ -142,7 +153,7 @@
               </router-link>
 
               <button
-                @click="deleteEvent(event.id)"
+                @click="openConfirm(event.id)"
                 class="flex-1 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
               >
                 Delete
@@ -158,6 +169,13 @@
 <script>
 export default {
   name: 'HostDashboard',
+
+  data() {
+    return {
+      showConfirm: false,
+      eventIdToDelete: null, // ✅ Store which event to delete
+    }
+  },
 
   computed: {
     hostEvents() {
@@ -190,12 +208,24 @@ export default {
   },
 
   methods: {
-    async deleteEvent(id) {
-      const confirmDelete = confirm('Are you sure you want to delete this event?')
+    // ✅ Fixed: Accept event ID and store it
+    openConfirm(eventId) {
+      this.eventIdToDelete = eventId
+      this.showConfirm = true
+    },
 
-      if (!confirmDelete) return
+    // ✅ Fixed: Use stored ID, no parameter needed from modal
+    async deleteEvent() {
+      if (!this.eventIdToDelete) return
 
-      await this.$store.dispatch('events/deleteEvent', id)
+      try {
+        await this.$store.dispatch('events/deleteEvent', this.eventIdToDelete)
+        this.showConfirm = false
+        this.eventIdToDelete = null
+      } catch (err) {
+        console.error('Failed to delete event:', err)
+        alert('Failed to delete event. Please try again.')
+      }
     },
   },
 }

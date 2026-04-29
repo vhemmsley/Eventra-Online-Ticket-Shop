@@ -15,6 +15,7 @@ import WhiteCard from './components/ui/WhiteCard.vue'
 import BaseCard from './components/ui/BaseCard.vue'
 import BaseSpinner from './components/ui/BaseSpinner.vue'
 import SkeletonLoader from './components/ui/SkeletonLoader.vue'
+import ConfirmModal from './components/ui/ConfirmModal.vue'
 
 // font-awesome config
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -51,6 +52,7 @@ app.component('event-card', EventCard)
 app.component('base-card', BaseCard)
 app.component('base-spinner', BaseSpinner)
 app.component('skeleton-loader', SkeletonLoader)
+app.component('confirm-modal', ConfirmModal)
 app.component('white-card', WhiteCard)
 app.component('font-awesome-icon', FontAwesomeIcon)
 

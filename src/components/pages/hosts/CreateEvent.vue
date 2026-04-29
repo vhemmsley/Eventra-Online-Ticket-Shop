@@ -9,19 +9,19 @@
         </p>
       </div>
 
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="openConfirm">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- TITLE -->
           <div class="md:col-span-2">
             <label class="form-label">Event Title</label>
-            <input v-model="title" type="text" class="form-input" />
+            <input v-model="title" type="text" class="form-input" @input="validateField('title')" />
             <p v-if="errors.title" class="error">{{ errors.title }}</p>
           </div>
 
           <!-- CATEGORY -->
           <div>
             <label class="form-label">Category</label>
-            <select v-model="category" class="form-input">
+            <select v-model="category" class="form-input" @change="validateField('category')">
               <option disabled value="">Select category</option>
               <option v-for="cat in categories" :key="cat">{{ cat }}</option>
             </select>
@@ -31,33 +31,68 @@
           <!-- LOCATION -->
           <div>
             <label class="form-label">Location</label>
-            <input v-model="location" type="text" class="form-input" />
+            <input
+              v-model="location"
+              type="text"
+              class="form-input"
+              @input="validateField('location')"
+            />
             <p v-if="errors.location" class="error">{{ errors.location }}</p>
           </div>
 
           <!-- DATE -->
           <div>
-            <label class="form-label">Date</label>
-            <input v-model="date" type="date" class="form-input" />
+            <label class="form-label"
+              >Date <span class="text-slate-400 font-normal">(optional)</span></label
+            >
+            <input
+              v-model="date"
+              type="date"
+              :min="minDate"
+              class="form-input"
+              @change="validateField('date')"
+            />
+            <p v-if="errors.date" class="error">{{ errors.date }}</p>
           </div>
 
           <!-- TIME -->
           <div>
-            <label class="form-label">Time</label>
-            <input v-model="time" type="time" class="form-input" />
+            <label class="form-label"
+              >Time <span class="text-slate-400 font-normal">(optional)</span></label
+            >
+            <input
+              v-model="time"
+              type="time"
+              :min="minTimeForSelectedDate"
+              class="form-input"
+              @change="validateField('time')"
+            />
+            <p v-if="errors.time" class="error">{{ errors.time }}</p>
           </div>
 
           <!-- PRICE -->
           <div>
             <label class="form-label">Price (₦)</label>
-            <input v-model.number="price" type="number" min="1" class="form-input" />
+            <input
+              v-model.number="price"
+              type="number"
+              min="1"
+              class="form-input"
+              @input="validateField('price')"
+            />
             <p v-if="errors.price" class="error">{{ errors.price }}</p>
           </div>
 
           <!-- TICKETS -->
           <div>
             <label class="form-label">Total Tickets</label>
-            <input v-model.number="totalTickets" type="number" min="1" class="form-input" />
+            <input
+              v-model.number="totalTickets"
+              type="number"
+              min="1"
+              class="form-input"
+              @input="validateField('totalTickets')"
+            />
             <p v-if="errors.totalTickets" class="error">{{ errors.totalTickets }}</p>
           </div>
 
@@ -87,13 +122,35 @@
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="w-full py-3 rounded-lg text-white bg-primary-gradient disabled:opacity-50"
+            class="w-full py-3 rounded-lg text-white bg-primary-gradient disabled:opacity-50 hover:scale-[1.01] transition"
           >
             {{ isSubmitting ? 'Creating...' : 'Create Event 🚀' }}
           </button>
         </div>
       </form>
     </white-card>
+
+    <!-- CONFIRM MODAL -->
+    <confirm-modal
+      v-if="showConfirm"
+      title="Confirm Event Creation"
+      message="Are you sure you want to create and publish this event?"
+      confirm-text="Publish"
+      cancel-text="Review"
+      @confirm="handleSubmit"
+      @cancel="showConfirm = false"
+    />
+
+    <!-- LOADING OVERLAY -->
+    <div
+      v-if="isSubmitting"
+      class="fixed inset-0 bg-white/70 flex flex-col items-center justify-center z-50"
+    >
+      <div
+        class="animate-spin h-10 w-10 border-4 border-purple-500 border-t-transparent rounded-full"
+      ></div>
+      <p class="mt-3 text-sm text-slate-600">Creating event...</p>
+    </div>
   </div>
 </template>
 
@@ -112,7 +169,6 @@
 </style>
 
 <script>
-// importing firebase firestore storAge  to save the event image and data
 import { storage, db } from '@/firebase'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
@@ -134,12 +190,10 @@ export default {
 
       errors: {},
       isSubmitting: false,
+      showConfirm: false,
     }
   },
-  created() {
-    // fetch categories if not already loaded
-    console.log(this.$store.getters['auth/userId'])
-  },
+
   computed: {
     categories() {
       return this.$store.getters['events/allCategories']
@@ -148,16 +202,41 @@ export default {
     userId() {
       return this.$store.getters['auth/userId']
     },
+
+    minDate() {
+      const today = new Date()
+      return today.toISOString().split('T')[0]
+    },
+
+    minTimeForSelectedDate() {
+      if (!this.date) return null
+
+      const selectedDate = new Date(this.date)
+      const now = new Date()
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+      if (selectedDate.getTime() === today.getTime()) {
+        const hours = now.getHours().toString().padStart(2, '0')
+        const minutes = now.getMinutes().toString().padStart(2, '0')
+        return `${hours}:${minutes}`
+      }
+
+      return null
+    },
   },
 
   methods: {
     handleImageUpload(e) {
       const file = e.target.files[0]
-
       if (!file) return
 
       this.imageFile = file
       this.imagePreview = URL.createObjectURL(file)
+
+      // Clear image error if exists
+      if (this.errors.image) {
+        delete this.errors.image
+      }
     },
 
     toSentenceCase(text) {
@@ -167,21 +246,16 @@ export default {
 
     formatTimeTo12Hr(time) {
       if (!time) return ''
-
       const [hour, minute] = time.split(':')
       let h = parseInt(hour)
       const ampm = h >= 12 ? 'PM' : 'AM'
-
       h = h % 12 || 12
-
       return `${h}:${minute} ${ampm}`
     },
 
     formatDate(date) {
       if (!date) return ''
-
       const d = new Date(date)
-
       return d.toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
@@ -209,14 +283,56 @@ export default {
         this.errors.image = 'Event image is required'
       }
 
+      // Date validation — only if user entered a value
+      if (this.date) {
+        const selectedDate = new Date(this.date)
+        const now = new Date()
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+        if (selectedDate < today) {
+          this.errors.date = 'Date cannot be in the past'
+        }
+      }
+
+      // Time validation — only if user entered a value
+      if (this.time) {
+        if (!this.date) {
+          this.errors.date = 'Please select a date first'
+        } else {
+          const selectedDateTime = new Date(`${this.date}T${this.time}`)
+          const now = new Date()
+
+          if (selectedDateTime <= now) {
+            this.errors.time = 'Time must be later than the current time'
+          }
+        }
+      }
+
       return Object.keys(this.errors).length === 0
     },
 
-    async handleSubmit() {
-      alert('Please Confirm Event Details Before Submission')
+    validateField(field) {
+      if (this.errors[field]) {
+        delete this.errors[field]
+      }
 
+      if (field === 'date') {
+        delete this.errors.time
+      }
+      if (field === 'time') {
+        if (this.errors.date === 'Please select a date first') {
+          delete this.errors.date
+        }
+      }
+    },
+
+    openConfirm() {
       if (!this.validateForm()) return
+      this.showConfirm = true
+    },
 
+    async handleSubmit() {
+      this.showConfirm = false
       this.isSubmitting = true
 
       try {
@@ -226,21 +342,21 @@ export default {
           throw new Error('User not authenticated')
         }
 
-        // 🔥 FORMAT DATA
+        // Format data
         const formattedTitle = this.toSentenceCase(this.title)
         const formattedLocation = this.toSentenceCase(this.location)
         const formattedCategory = this.toSentenceCase(this.category)
         const formattedDate = this.formatDate(this.date)
         const formattedTime = this.formatTimeTo12Hr(this.time)
 
-        // 🔥 Upload image
+        // Upload image
         const fileName = `${Date.now()}_${this.imageFile.name}`
         const storageRef = ref(storage, `events/${userId}/${fileName}`)
 
         await uploadBytes(storageRef, this.imageFile)
         const imageUrl = await getDownloadURL(storageRef)
 
-        // 🔥 Save to Firestore
+        // Save to Firestore
         await addDoc(collection(db, 'events'), {
           title: formattedTitle,
           category: formattedCategory,
@@ -262,14 +378,14 @@ export default {
 
           createdAt: serverTimestamp(),
         })
+
+        this.$router.push('/host/dashboard')
       } catch (err) {
         console.error(err)
         alert(err.message)
       } finally {
         this.isSubmitting = false
       }
-
-      this.$router.push('/host/dashboard')
     },
   },
 }
