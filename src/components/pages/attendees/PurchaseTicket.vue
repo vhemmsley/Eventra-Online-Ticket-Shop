@@ -1,3 +1,4 @@
+file_content = '''
 <template>
   <div class="min-h-screen bg-hero-gradient px-4 md:px-[5%] py-6 md:py-12">
     <!-- LOADING -->
@@ -29,7 +30,7 @@
         <span class="text-sm font-medium">Back to Events</span>
       </button>
 
-      <div class="flex flex-col lg:grid lg:grid-cols-5 gap-6 lg:gap-8">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
         <!-- LEFT: Event Details (3 columns) -->
         <div class="lg:col-span-3 space-y-6">
           <!-- Hero Image -->
@@ -195,19 +196,16 @@
               <p class="text-sm text-slate-500 leading-relaxed">{{ event.description }}</p>
             </div>
           </white-card>
-        </div>
 
-        <!-- BUYER INFO -->
-        <div class="mb-6">
-          <h2 class="text-lg font-semibold mb-4">Your Details</h2>
-
-          <div class="space-y-3">
-            <input v-model="buyer.fullName" type="text" placeholder="Full Name" class="input" />
-
-            <input v-model="buyer.email" type="email" placeholder="Email Address" class="input" />
-
-            <input v-model="buyer.phone" type="tel" placeholder="Phone Number" class="input" />
-          </div>
+          <!-- BUYER INFO -->
+          <white-card class="p-6 md:p-8">
+            <h2 class="text-lg font-semibold mb-4 text-slate-800">Your Details</h2>
+            <div class="space-y-3">
+              <input v-model="buyer.fullName" type="text" placeholder="Full Name" class="input" />
+              <input v-model="buyer.email" type="email" placeholder="Email Address" class="input" />
+              <input v-model="buyer.phone" type="tel" placeholder="Phone Number" class="input" />
+            </div>
+          </white-card>
         </div>
 
         <!-- RIGHT: Purchase Panel (2 columns) -->
@@ -651,3 +649,4 @@ export default {
   },
 }
 </script>
+'''
