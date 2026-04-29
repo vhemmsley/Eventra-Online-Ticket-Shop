@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LandingPage from '@/components/pages/LandingPage.vue'
 import EventsPage from '@/components/pages/EventsPage.vue'
+import PurchaseTicket from '@/components/pages/attendees/PurchaseTicket.vue'
 import AuthPage from '@/components/pages/Auth/AuthPage.vue'
 
 import HostDashboard from '@/components/pages/hosts/HostDashboard.vue'
@@ -14,6 +15,7 @@ const router = createRouter({
     { path: '/', component: LandingPage },
     { path: '/home', redirect: '/' },
     { path: '/events', component: EventsPage },
+    { path: '/events/purchase/:id', component: PurchaseTicket },
     { path: '/auth', component: AuthPage },
     { path: '/host/dashboard', component: HostDashboard },
     { path: '/host/create-event', component: CreateEvent },

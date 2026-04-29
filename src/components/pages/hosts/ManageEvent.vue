@@ -141,7 +141,7 @@
           <div>
             <label class="label">Status</label>
             <select v-model="eventData.eventStatus" class="input">
-              <option value="active">Active</option>
+              <option value="on_sale">Active</option>
               <option value="paused">Paused</option>
               <option value="sold_out">Sold Out</option>
             </select>

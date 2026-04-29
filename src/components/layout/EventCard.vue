@@ -114,6 +114,7 @@
 
           <!-- action button -->
           <button
+            @click="purchaseTicket()"
             :disabled="event.eventStatus !== 'on_sale'"
             :class="[
               'w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2',
@@ -150,6 +151,10 @@ export default {
   methods: {
     favouriteEvent(id) {
       this.$store.commit('events/toggleFavorite', id)
+    },
+
+    purchaseTicket() {
+      this.$router.push(`/events/purchase/${this.event.id}`)
     },
   },
 }

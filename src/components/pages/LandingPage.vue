@@ -210,11 +210,12 @@
 
             <p class="text-sm text-slate-500">Create and manage your events</p>
 
-            <button
+            <router-link
+              to="/host/dashboard"
               class="px-5 py-2 mt-8 shadow-lg font-semibold rounded-lg text-primary bg-purple-200 border border-slate-300 hover:border-purple-400 hover:bg-purple-100 transition duration-200"
             >
               Host an Event
-            </button>
+            </router-link>
           </div>
         </base-card>
       </div>
